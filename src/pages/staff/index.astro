@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StaffDirectory from '../../components/StaffDirectory.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { BOARD_HEADING, BOARD_LABEL, getDepartments, getStaff } from '../../lib/staff';
+import { withBase } from '../../nav';
+
+const departments = await getDepartments();
+const people = await getStaff(departments);
+const board = people.filter((p) => p.data.board);
+
+const tabs = [
+  { label: BOARD_LABEL, href: withBase('/staff'), current: true },
+  ...departments.map((d) => ({ label: d.data.title, href: withBase(`/staff/${d.id}`) })),
+];
+---
+
+<Layout title="Our Team" description="Meet the directors and department heads of BaseNET Technology Sdn Bhd.">
+  <StaffDirectory
+    crumbs={[{ label: 'Home', href: withBase('/') }, { label: 'Staff' }]}
+    title={BOARD_HEADING}
+    {tabs}
+    groups={[
+      { label: 'Directors', people: board.filter((p) => !p.department) },
+      { label: 'Department heads', people: board.filter((p) => p.department) },
+    ]}
+  />
+  <ContactCta slot="cta" />
+</Layout>

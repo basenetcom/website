@@ -1,0 +1,64 @@
+---
+interface Props {
+  page: number;
+  totalPages: number;
+  /** URL of page n (page 1 is usually the unnumbered base URL). */
+  href: (n: number) => string;
+}
+
+const { page, totalPages, href } = Astro.props;
+
+// 1 … current-1, current, current+1 … last
+const numbers = Array.from({ length: totalPages }, (_, i) => i + 1).filter(
+  (n) => n === 1 || n === totalPages || Math.abs(n - page) <= 1,
+);
+const items: (number | 'gap')[] = [];
+numbers.forEach((n, i) => {
+  if (i > 0 && n - numbers[i - 1] > 1) items.push('gap');
+  items.push(n);
+});
+
+const box =
+  'inline-flex h-10 min-w-10 items-center justify-center rounded-sm border px-3.5 text-small font-medium transition-colors motion-reduce:transition-none';
+const link = `${box} border-brand-100 bg-white text-brand-900 hover:border-brand-900 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900`;
+const disabled = `${box} border-brand-100 bg-white text-muted`;
+---
+
+{
+  totalPages > 1 && (
+    <nav aria-label="Pagination">
+      <ul class="flex flex-wrap items-center justify-center gap-2">
+        <li>
+          {page > 1 ? (
+            <a href={href(page - 1)} rel="prev" class={link}>Previous</a>
+          ) : (
+            <span aria-disabled="true" class={disabled}>Previous</span>
+          )}
+        </li>
+        {items.map((item) =>
+          item === 'gap' ? (
+            <li aria-hidden="true" class="px-1 text-muted">…</li>
+          ) : (
+            <li>
+              <a
+                href={href(item)}
+                aria-current={item === page ? 'page' : undefined}
+                aria-label={`Page ${item}`}
+                class:list={[link, 'aria-[current=page]:border-brand-900 aria-[current=page]:bg-brand-900 aria-[current=page]:text-white']}
+              >
+                {item}
+              </a>
+            </li>
+          ),
+        )}
+        <li>
+          {page < totalPages ? (
+            <a href={href(page + 1)} rel="next" class={link}>Next</a>
+          ) : (
+            <span aria-disabled="true" class={disabled}>Next</span>
+          )}
+        </li>
+      </ul>
+    </nav>
+  )
+}

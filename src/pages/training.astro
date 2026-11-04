@@ -1,0 +1,175 @@
+---
+import { Image } from 'astro:assets';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import Layout from '../layouts/Layout.astro';
+import TrainingCard from '../components/TrainingCard.astro';
+import CourseDetail from '../components/CourseDetail.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { getTrainingPrograms, displayTitle } from '../lib/training';
+import { withBase } from '../nav';
+import { COMPANY } from '../site.config';
+import teamPhoto from '../assets/training/team.jpg';
+
+const programs = await getTrainingPrograms();
+const names = programs.map((p) => p.data.title);
+const nameList = names.join(', ').replace(/, ([^,]*)$/, ' or $1');
+const inquireHref = `${withBase('/contact')}?interest=Training`;
+
+const steps = [
+  {
+    title: 'Share your training needs',
+    text: 'Tell us which program interests you, the work your team does and the skills you would like to develop.',
+  },
+  {
+    title: 'Discuss the right focus',
+    text: 'Explore relevant topics and practical applications with us. Share your team size and preferred arrangements.',
+  },
+  {
+    title: 'Confirm the details',
+    text: 'Inquire about availability, delivery arrangements and fees before deciding on your next step.',
+  },
+];
+
+const eyebrow = 'text-small font-semibold uppercase tracking-[0.12em] text-brand-900';
+const sectionTitle = 'text-4xl/tight font-semibold tracking-tight text-brand-900 sm:text-display';
+---
+
+<Layout
+  title="Corporate Training"
+  description={`Practical IT and safety training for your team${names.length ? `: ${names.join(', ')}` : ''}.`}
+>
+  <!-- Introduction -->
+  <section aria-labelledby="training-intro-title" class="bg-brand-75">
+    <div class="mx-auto flex max-w-6xl flex-col gap-9 px-8 pt-8 pb-16">
+      <nav aria-label="Breadcrumb">
+        <ol class="flex items-center gap-3 text-small text-copy">
+          <li><a href={withBase('/')} class="rounded-sm hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900">Home</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" class="font-semibold text-brand-900">Training</li>
+        </ol>
+      </nav>
+
+      <div class="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
+        <div class="flex min-w-0 flex-1 flex-col items-start gap-6">
+          <p class={eyebrow}>Corporate Training</p>
+          <h1 id="training-intro-title" class="text-4xl/[1.08] font-bold tracking-tighter text-brand-900 sm:text-5xl/[1.08] lg:text-6xl/[1.08]">
+            Professional IT &amp; Safety Training
+          </h1>
+          <p class="text-xl/[1.65] text-copy">
+            Upskill your team with practical training programs designed for business productivity, data analysis and operational safety.
+          </p>
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a
+              href={inquireHref}
+              class="inline-flex h-13 items-center gap-5 rounded-sm bg-brand-900 px-6 text-base font-semibold text-white transition-colors hover:bg-brand-700 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 motion-reduce:transition-none"
+            >
+              Inquire About Training
+              <ArrowUpRight size={18} aria-hidden="true" />
+            </a>
+            {names.length > 0 && <p class="text-small text-copy">{names.join(' · ')}</p>}
+          </div>
+        </div>
+
+        <Image
+          src={teamPhoto}
+          alt=""
+          width={912}
+          loading="eager"
+          fetchpriority="high"
+          class="aspect-4/3 w-full rounded-lg object-cover lg:aspect-auto lg:h-89 lg:w-114 lg:shrink-0"
+        />
+      </div>
+    </div>
+  </section>
+
+  {programs.length > 0 && (<>
+  <!-- Programme overview -->
+  <section aria-labelledby="programs-title" class="bg-brand-100">
+    <div class="mx-auto max-w-6xl px-8 py-16">
+      <header class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+        <div class="flex flex-col gap-3">
+          <p class={eyebrow}>Our training programs</p>
+          <h2 id="programs-title" class={sectionTitle}>Practical skills. Business relevance.</h2>
+        </div>
+        <p class="max-w-prose text-body/[1.65] text-copy lg:max-w-87">
+          Explore focused learning for your everyday work, from the office to the field.
+        </p>
+      </header>
+
+      <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          programs.map((p) => (
+            <li>
+              <TrainingCard
+                size="lg"
+                image={p.icon}
+                title={displayTitle(p)}
+                description={p.data.summary}
+                focus={p.data.focus}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Course details -->
+  <section aria-labelledby="courses-title" class="bg-white">
+    <div class="mx-auto max-w-6xl px-8 pt-18 pb-10">
+      <header class="flex max-w-3xl flex-col gap-3.5">
+        <p class={eyebrow}>Explore the courses</p>
+        <h2 id="courses-title" class={sectionTitle}>Learning that connects to real work.</h2>
+        <p class="text-lg/[1.65] text-copy">
+          Use these topic areas as a starting point. Talk to us about the skills and practical applications most relevant to your team.
+        </p>
+      </header>
+
+      <div class="mt-6">
+        {programs.map((program) => <CourseDetail {program} />)}
+      </div>
+    </div>
+  </section>
+
+  </>)}
+
+  <!-- Inquiry process -->
+  <section aria-labelledby="process-title" class="bg-brand-100">
+    <div class="mx-auto max-w-6xl px-8 py-16">
+      <header class="flex flex-col gap-3.5">
+        <p class={eyebrow}>Plan your training</p>
+        <h2 id="process-title" class={sectionTitle}>Start with a conversation.</h2>
+      </header>
+
+      <ol class="mt-9 grid gap-10 md:grid-cols-3">
+        {
+          steps.map((step, i) => (
+            <li class="flex flex-col gap-4 border-t border-brand-900 pt-5">
+              <p class="text-body font-semibold text-brand-900">{String(i + 1).padStart(2, '0')}</p>
+              <h3 class="text-[1.375rem]/[1.2] font-semibold tracking-tight text-brand-900">{step.title}</h3>
+              <p class="text-body/[1.65] text-copy">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <ContactCta
+    slot="cta"
+    eyebrow="Let’s talk about your next step"
+    title="What would your team like to learn?"
+    description={`Talk to BaseNET about ${nameList || 'your training needs'}. Share your goals and inquire about training arrangements.`}
+    action={{ label: 'Inquire About Training', href: inquireHref }}
+  >
+    <a
+      href={`mailto:${COMPANY.email}`}
+      class="rounded-sm text-lg font-medium text-white hover:underline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white"
+    >
+      {COMPANY.email}
+    </a>
+    <p class="text-small/[1.6] text-brand-200">
+      Include your program of interest, team size and preferred timing in your inquiry.
+    </p>
+  </ContactCta>
+</Layout>

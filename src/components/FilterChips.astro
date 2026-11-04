@@ -1,0 +1,32 @@
+---
+interface Chip {
+  label: string;
+  href: string;
+  current?: boolean;
+}
+
+interface Props {
+  label: string;
+  chips: Chip[];
+}
+
+const { label, chips } = Astro.props;
+---
+
+<nav aria-label={label}>
+  <ul class="flex flex-wrap gap-3">
+    {
+      chips.map((chip) => (
+        <li>
+          <a
+            href={chip.href}
+            aria-current={chip.current ? 'page' : undefined}
+            class="inline-flex min-h-9 items-center rounded-sm border border-brand-100 bg-white px-3.5 text-caption font-medium text-copy transition-colors hover:border-brand-900 hover:text-brand-900 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900 aria-[current=page]:border-brand-900 aria-[current=page]:bg-brand-900 aria-[current=page]:font-semibold aria-[current=page]:text-white motion-reduce:transition-none"
+          >
+            {chip.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

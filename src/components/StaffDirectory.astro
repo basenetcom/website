@@ -1,0 +1,40 @@
+---
+import PageHero from './PageHero.astro';
+import FilterChips from './FilterChips.astro';
+import StaffCard from './StaffCard.astro';
+import type { Person } from '../lib/staff';
+
+interface Props {
+  crumbs: { label: string; href?: string }[];
+  title: string;
+  tabs: { label: string; href: string; current?: boolean }[];
+  /** Each group is a centred row-wrap of cards; groups are shown one after the other. */
+  groups: { label: string; people: Person[] }[];
+}
+
+const { crumbs, title, tabs, groups } = Astro.props;
+const visible = groups.filter((g) => g.people.length > 0);
+---
+
+<PageHero {crumbs} eyebrow="Staff directory" {title} />
+
+<section aria-labelledby="our-people-title" class="bg-white">
+  <div class="mx-auto flex max-w-6xl flex-col gap-6 px-8 py-14">
+    <h2 id="our-people-title" class="text-2xl font-semibold text-brand-900 sm:text-heading">Our people</h2>
+    <FilterChips label="Departments" chips={tabs} />
+
+    {
+      visible.length > 0 ? (
+        <div class="mt-2 flex flex-col gap-5">
+          {visible.map((group) => (
+            <ul aria-label={group.label} class="flex flex-wrap justify-center gap-5">
+              {group.people.map((person) => <StaffCard {person} />)}
+            </ul>
+          ))}
+        </div>
+      ) : (
+        <p class="rounded-lg border border-brand-100 bg-brand-50 p-8 text-center text-copy">No staff are listed here yet.</p>
+      )
+    }
+  </div>
+</section>

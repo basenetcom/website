@@ -1,0 +1,39 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import NewsListing from '../../../components/NewsListing.astro';
+import ContactCta from '../../../components/ContactCta.astro';
+import { getArticles, getCategories, paginate, pickFeatured } from '../../../lib/news';
+import { withBase } from '../../../nav';
+
+/** Pages 2..N of "All news" (page 1 is /news). */
+export async function getStaticPaths() {
+  const articles = await getArticles();
+  const featured = pickFeatured(articles);
+  const { totalPages } = paginate(
+    articles.filter((a) => a !== featured),
+    1,
+  );
+  return Array.from({ length: totalPages - 1 }, (_, i) => ({ params: { page: String(i + 2) } }));
+}
+
+const page = Number(Astro.params.page);
+const categories = await getCategories();
+const articles = await getArticles(categories);
+const featured = pickFeatured(articles);
+const view = paginate(
+  articles.filter((a) => a !== featured),
+  page,
+);
+---
+
+<Layout title={`News, page ${page}`} description="News and updates from BaseNET Technology Sdn Bhd.">
+  <NewsListing
+    crumbs={[{ label: 'Home', href: withBase('/') }, { label: 'News', href: withBase('/news') }, { label: `Page ${page}` }]}
+    title="News"
+    intro="Browse more news and updates from BaseNET Technology Sdn Bhd."
+    {categories}
+    {view}
+    hrefForPage={(n) => withBase(n === 1 ? '/news' : `/news/page/${n}`)}
+  />
+  <ContactCta slot="cta" />
+</Layout>
