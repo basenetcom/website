@@ -9,7 +9,7 @@ import NewsCard from './NewsCard.astro';
 import Pagination from './Pagination.astro';
 import { formatDate, isoDate } from '../lib/content';
 import { withBase } from '../nav';
-import type { Article, Category, paginate } from '../lib/news';
+import type { Article, Category, PageView } from '../lib/news';
 
 interface Props {
   crumbs: { label: string; href?: string }[];
@@ -18,7 +18,7 @@ interface Props {
   categories: Category[];
   /** Id of the active category; undefined means "All news". */
   activeCategory?: string;
-  view: ReturnType<typeof paginate<Article>>;
+  view: PageView<Article>;
   /** URL of page n of this list. */
   hrefForPage: (n: number) => string;
   /** Article shown in the "Featured news" slot above the list (first page of "All news" only). */

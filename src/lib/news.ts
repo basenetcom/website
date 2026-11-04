@@ -50,7 +50,17 @@ export async function getArticles(categories?: Category[]): Promise<Article[]> {
 /** The newest featured article, or the newest article if none is marked featured. */
 export const pickFeatured = (articles: Article[]) => articles.find((a) => a.data.featured) ?? articles[0];
 
-export const paginate = <T,>(items: T[], page: number, size = PAGE_SIZE) => ({
+export type PageView<T> = {
+  items: T[];
+  page: number;
+  totalPages: number;
+  total: number;
+  /** 1-based position of the first and last item on this page. */
+  first: number;
+  last: number;
+};
+
+export const paginate = <T,>(items: T[], page: number, size = PAGE_SIZE): PageView<T> => ({
   items: items.slice((page - 1) * size, page * size),
   page,
   totalPages: Math.max(1, Math.ceil(items.length / size)),

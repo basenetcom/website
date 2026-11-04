@@ -58,7 +58,7 @@ const staff = defineCollection({
     role: text,
     /** Department name or file name. Leave empty for directors. */
     department: text,
-    /** Show on the Board of Director tab (/staff). */
+    /** Show on the Board of Directors tab (/staff). */
     board: flag,
     order: sortOrder,
     /** Portrait file in src/assets/staff/; only the file name is used. */

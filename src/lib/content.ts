@@ -50,9 +50,13 @@ export function findByNameOrSlug<T extends { id: string; data: { title: string }
 
 const warned = new Set<string>();
 
+/** Escapes a value for a GitHub Actions workflow command, so content can't break or inject commands. */
+const escapeData = (v: string) => v.replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+const escapeProperty = (v: string) => escapeData(v).replace(/:/g, '%3A').replace(/,/g, '%2C');
+
 /** Build warning shown as an annotation in GitHub Actions logs (and as plain text locally). Printed once. */
 export function warn(file: string, message: string) {
-  const line = `::warning file=${file}::${message}`;
+  const line = `::warning file=${escapeProperty(file)}::${escapeData(message)}`;
   if (warned.has(line)) return;
   warned.add(line);
   console.warn(line);

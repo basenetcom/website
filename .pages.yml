@@ -146,7 +146,7 @@ content:
           label: "{primary}"
 
       - name: board
-        label: Show on the Board of Director tab
+        label: Show on the Board of Directors tab
         type: boolean
         description: Turn on for directors and department heads.
 
