@@ -1,0 +1,135 @@
+---
+import { Image } from 'astro:assets';
+import Pause from '@lucide/astro/icons/pause';
+import Play from '@lucide/astro/icons/play';
+import panduit from '../assets/brands/panduit.png';
+import fluke from '../assets/brands/fluke.png';
+import cisco from '../assets/brands/cisco.png';
+import dell from '../assets/brands/dell.png';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+}
+
+const { eyebrow = 'Technology Ecosystem', title = 'Brands That Have Chosen Us' } = Astro.props;
+
+const brands = [
+  { name: 'Panduit', logo: panduit },
+  { name: 'Fluke', logo: fluke },
+  { name: 'Cisco', logo: cisco },
+  { name: 'Dell', logo: dell },
+];
+
+// One set is the real list; the second is a decorative copy that makes the loop seamless.
+const groups = [{ hidden: false }, { hidden: true }];
+---
+
+<section aria-labelledby="brands-title" class="bg-white">
+  <div class="mx-auto max-w-7xl px-8 py-section">
+    <header class="text-center text-brand-900">
+      <p class="text-xl font-semibold uppercase">{eyebrow}</p>
+      <h2 id="brands-title" class="mt-3.5 text-4xl/tight font-extrabold sm:text-display">{title}</h2>
+    </header>
+
+    <div class="marquee mt-10" data-marquee>
+      <div class="marquee-viewport">
+        {
+          groups.map(({ hidden }) => (
+            <ul
+              class="marquee-group"
+              aria-label={hidden ? undefined : 'Our technology partners'}
+              aria-hidden={hidden ? 'true' : undefined}
+              inert={hidden}
+            >
+              {brands.map(({ name, logo }) => (
+                <li class="flex h-26 w-72 shrink-0 items-center justify-center rounded-sm border border-brand-100 bg-white p-4">
+                  <Image src={logo} alt={hidden ? '' : name} height={64} class="max-h-16 w-auto max-w-48 object-contain" />
+                </li>
+              ))}
+            </ul>
+          ))
+        }
+      </div>
+
+      <div class="marquee-controls mt-6 justify-center">
+        <button
+          type="button"
+          aria-pressed="false"
+          data-marquee-toggle
+          class="group inline-flex min-h-11 items-center gap-2 rounded-sm border border-brand-100 bg-white px-4 text-small font-medium text-brand-900 hover:bg-brand-50 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900"
+        >
+          <Pause size={16} class="group-aria-pressed:hidden" />
+          <Play size={16} class="hidden group-aria-pressed:block" />
+          Pause animation
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Default (and prefers-reduced-motion: reduce): a static, wrapping grid. */
+  .marquee-viewport {
+    display: block;
+  }
+  .marquee-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+  .marquee-group[aria-hidden='true'],
+  .marquee-controls {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee {
+      --gap: 1.25rem;
+    }
+    .marquee-viewport {
+      display: flex;
+      gap: var(--gap);
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    }
+    .marquee-group,
+    .marquee-group[aria-hidden='true'] {
+      display: flex;
+      flex-wrap: nowrap;
+      flex-shrink: 0;
+      min-width: 100%;
+      justify-content: space-around;
+      gap: var(--gap);
+      animation: marquee-scroll 40s linear infinite;
+    }
+    .marquee-controls {
+      display: flex;
+    }
+
+    /* Pause on hover, on keyboard focus, or when the user presses the button (WCAG 2.2.2). */
+    .marquee:hover .marquee-group,
+    .marquee:focus-within .marquee-group,
+    .marquee[data-paused='true'] .marquee-group {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes marquee-scroll {
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-marquee]').forEach((root) => {
+    const button = root.querySelector<HTMLButtonElement>('[data-marquee-toggle]');
+    button?.addEventListener('click', () => {
+      const paused = button.getAttribute('aria-pressed') !== 'true';
+      button.setAttribute('aria-pressed', String(paused));
+      root.dataset.paused = String(paused);
+    });
+  });
+</script>

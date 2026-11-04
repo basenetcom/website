@@ -1,0 +1,45 @@
+---
+interface Props {
+  eyebrow?: string;
+  title?: string;
+}
+
+const { eyebrow = 'About Us', title = 'Reliable IT infrastructure for business.' } = Astro.props;
+---
+
+<section aria-labelledby="about-title" class="bg-brand-100">
+  <div class="mx-auto max-w-7xl px-8 py-section">
+    <header class="font-semibold text-brand-900">
+      <p class="text-2xl uppercase">{eyebrow}</p>
+      <h2 id="about-title" class="mt-3.5 text-4xl/tight sm:text-display">{title}</h2>
+    </header>
+
+    <div class="mt-8 grid gap-12 lg:grid-cols-2 xl:grid-cols-[1fr_669px]">
+      <div>
+        <h3 class="text-2xl font-semibold uppercase text-brand-900 sm:text-heading">Company Overview</h3>
+        <p class="mt-4 text-body text-pretty text-copy">
+          BaseNET Technology Sdn Bhd (BaseNET) was established in 1996 (incorporated April 1994) registered under
+          Ministry of Finance (MOF) with full range of IT code. The company was initially setup to supply the demands
+          and needs in IT industry that which is rapidly grows in Malaysia. We are committed to supply excellent
+          quality IT services and focus on end-to-end IT solutions that includes Hardware &amp; Software Solutions,
+          Structured Cabling Solution, Support &amp; Maintenance Services.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-2xl font-semibold uppercase text-brand-900 sm:text-heading">Company Vision &amp; Mission</h3>
+        <div class="mt-4 space-y-4 text-body text-copy">
+          <p>
+            <strong class="font-black">Vision</strong>: To be a Preferred &amp; Market Leader for system integrator and
+            innovative solutions provider.
+          </p>
+          <p>
+            <strong class="font-black">Mission</strong>: We are a market-focused, Process-centric organization that
+            develops and delivers innovative solutions to our customers, and provides a dynamic environment for our
+            employee
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

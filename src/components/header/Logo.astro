@@ -1,0 +1,9 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../../assets/logo.webp';
+import { SITE_NAME } from '../../site.config';
+---
+
+<a href={import.meta.env.BASE_URL} aria-label={`${SITE_NAME} home`} class="block rounded-sm focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white">
+  <Image src={logo} alt="" height={64} loading="eager" class="h-12 w-auto lg:h-16" />
+</a>

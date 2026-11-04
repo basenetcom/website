@@ -1,0 +1,13 @@
+---
+interface Props {
+  href?: string;
+  class?: string;
+}
+const { href, class: className } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag {href} class:list={["flex items-center gap-2 text-sm text-brand-700 hover:text-brand-900 lg:text-xl", [className]]}>
+  <slot name="icon" />
+  <slot />
+</Tag>

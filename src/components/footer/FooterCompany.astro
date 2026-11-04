@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import logo from '../../assets/logo.webp';
+import { COMPANY } from '../../site.config';
+
+interface Props {
+  /** Optional anniversary emblem shown beside the logo on large screens (decorative). */
+  emblem?: ImageMetadata;
+}
+
+const { emblem } = Astro.props;
+---
+
+<div class="flex items-start gap-5">
+  {emblem && <Image src={emblem} alt="" height={75} class="hidden h-[75px] w-auto shrink-0 lg:block" />}
+  <div class="flex flex-col gap-2.5">
+    <a
+      href={import.meta.env.BASE_URL}
+      aria-label={`${COMPANY.legalName} home`}
+      class="block w-fit rounded-sm focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white"
+    >
+      <Image src={logo} alt="" height={64} class="h-16 w-auto" />
+    </a>
+    <p class="text-base font-black text-white">{COMPANY.legalName}</p>
+    <p class="max-w-85 text-caption/[1.7] text-brand-200">{COMPANY.tagline}</p>
+  </div>
+</div>

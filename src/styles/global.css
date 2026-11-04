@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme {
+  /* Color */
+  --color-brand-50: #f3f7fb; /* hero background */
+  --color-brand-75: #edf3f8; /* icon tile surface */
+  --color-brand-100: #dfe6ed; /* muted section surface (About Us), card borders */
+  --color-brand-200: #bfcddb; /* muted text on navy (footer) */
+  --color-brand-700: #284b7c; /* top-bar contact text */
+  --color-brand-800: #315373; /* dividers on navy (footer) */
+  --color-brand-900: #003366; /* headings, primary actions */
+  --color-accent: #4ea1ff; /* active / hover nav link */
+  --color-nav: #fdfeff; /* nav link text on black */
+  --color-copy: #475569; /* body copy (slate-600) */
+  --color-muted: #637487; /* captions */
+
+  /* Typography */
+  --text-display: 3rem; /* 48px section heading */
+  --text-display--line-height: 1.2;
+  --text-heading: 2rem; /* 32px sub-heading */
+  --text-heading--line-height: normal;
+  --text-body: 1rem; /* 16px body */
+  --text-body--line-height: 1.65;
+  --text-cta: 2.75rem; /* 44px call-to-action heading */
+  --text-cta--line-height: 1.15;
+  --text-cta--letter-spacing: -0.034em;
+  --text-lead: 1.5rem; /* 24px intro paragraph */
+  --text-lead--line-height: 1.65;
+  --text-title: 1.25rem; /* 20px card title */
+  --text-title--line-height: 1.3;
+  --text-small: 0.875rem; /* 14px card copy */
+  --text-small--line-height: 1.65;
+  --text-caption: 0.75rem; /* 12px captions */
+  --text-caption--line-height: 1.5;
+
+  /* Layout */
+  --spacing-section: 4.5rem; /* 72px vertical section padding */
+}

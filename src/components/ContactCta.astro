@@ -1,0 +1,39 @@
+---
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  action?: { label: string; href: string };
+}
+
+const {
+  eyebrow = 'Let’s talk about your next step',
+  title = 'How can we help you?',
+  description = 'Tell us what your business needs. Let’s find the right IT solution.',
+  action = { label: 'Contact Us', href: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/contact` },
+} = Astro.props;
+---
+
+<!-- Sits on the navy footer background; pass it to <Layout> via slot="cta". Extra content goes in the default slot. -->
+<section aria-labelledby="cta-title" class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+  <div class="max-w-180">
+    <p class="text-caption font-semibold uppercase tracking-[0.15em] text-brand-200">{eyebrow}</p>
+    <h2 id="cta-title" class="mt-4 text-[2.125rem]/[1.15] font-semibold tracking-[-0.044em] text-white sm:text-cta">
+      {title}
+    </h2>
+    <p class="mt-4 max-w-prose text-base/[1.6] text-brand-200 sm:text-lg/[1.6]">{description}</p>
+  </div>
+
+  <div class="flex flex-col items-start gap-4 lg:max-w-82">
+    <a
+      href={action.href}
+      class="inline-flex min-h-13 items-center gap-5 rounded-sm bg-white px-6 text-base font-semibold text-brand-900 transition-colors hover:bg-brand-50 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transition-none"
+    >
+      {action.label}
+      <ArrowUpRight size={18} aria-hidden="true" />
+    </a>
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,17 @@
+---
+import Hero from '../components/Hero.astro';
+import AboutUs from '../components/AboutUs.astro';
+import Solutions from '../components/Solutions.astro';
+import LogoCloud from '../components/LogoCloud.astro';
+import ContactCta from '../components/ContactCta.astro';
+import Layout from '../layouts/Layout.astro';
+import HeroImage from '../assets/data-centre.jpeg';
+---
+
+<Layout>
+	<Hero image={HeroImage} />
+	<AboutUs />
+	<Solutions />
+	<LogoCloud />
+	<ContactCta slot="cta" />
+</Layout>

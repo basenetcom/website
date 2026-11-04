@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  cta?: { label: string; href: string };
+  tags?: string[];
+  /** Decorative photo shown on the right (alt is intentionally empty). */
+  image?: ImageMetadata;
+}
+
+const {
+  eyebrow = 'Built for business. Ready for what’s next.',
+  title = 'Reliable IT Infrastructure & Solutions',
+  description = 'Connect your people, power your operations and protect what matters with IT solutions built around your business.',
+  cta = { label: 'Get in Touch', href: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/contact` },
+  tags = ['Networking', 'Virtualization', 'Security'],
+  image,
+} = Astro.props;
+---
+
+<section aria-labelledby="hero-title" class="bg-brand-50">
+  <div class="mx-auto grid max-w-7xl lg:grid-cols-2 lg:grid-rows-[1fr_auto]">
+    <div class="px-8 pt-12 sm:pt-16 lg:self-end lg:pt-24">
+      <p class="text-sm font-semibold uppercase tracking-widest text-brand-900 lg:tracking-wide">{eyebrow}</p>
+      <h1 id="hero-title" class="mt-6 text-4xl font-bold tracking-tight text-brand-900 sm:text-5xl lg:text-6xl">
+        {title}
+      </h1>
+      <p class="mt-6 max-w-xl text-lg/8 text-slate-700">{description}</p>
+
+      <a
+        href={cta.href}
+        class="mt-8 inline-flex min-h-12 min-w-44 items-center justify-between gap-3 rounded-sm border border-transparent bg-brand-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-brand-900/90 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 motion-reduce:transition-none"
+      >
+        {cta.label}
+        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M7 17 17 7M8 7h9v9" />
+        </svg>
+      </a>
+    </div>
+
+    <!-- On mobile the tags overlay the bottom of the photo (same grid cell); a wash keeps them readable. -->
+    <ul class="z-10 col-start-1 row-start-2 flex flex-wrap items-center gap-x-2 gap-y-1 self-end bg-linear-to-t from-brand-50 via-brand-50/90 to-transparent px-8 pt-12 pb-6 text-xs font-medium uppercase tracking-widest text-brand-900 lg:self-start lg:bg-none lg:pt-4 lg:pb-24 lg:tracking-wide">
+      <li aria-hidden="true" class="mr-2 hidden h-px w-8 bg-brand-900 lg:block"></li>
+      {
+        tags.map((tag, i) => (
+          <li class="flex gap-2">
+            {tag}
+            {i < tags.length - 1 && <span aria-hidden="true">/</span>}
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      image && (
+        <div class="col-start-1 row-start-2 mt-10 min-h-80 px-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:px-0">
+          <Image
+            src={image}
+            alt=""
+            loading="eager"
+            class="size-full min-h-80 object-cover mask-[linear-gradient(to_bottom,transparent,black_30%)] lg:mask-[linear-gradient(to_right,rgb(0_0_0/0.02),rgb(0_0_0/0.02)_7%,rgb(0_0_0/0.86)_51%,black)]"
+          />
+        </div>
+      )
+    }
+  </div>
+</section>
