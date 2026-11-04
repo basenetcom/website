@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsListing from '../../components/NewsListing.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { getArticles, getCategories, paginate, pickFeatured } from '../../lib/news';
+import { withBase } from '../../nav';
+
+const categories = await getCategories();
+const articles = await getArticles(categories);
+const featured = pickFeatured(articles);
+// The featured article has its own slot, so it isn't repeated in the list.
+const list = articles.filter((a) => a !== featured);
+const view = paginate(list, 1);
+---
+
+<Layout title="News" description="News and updates from BaseNET Technology Sdn Bhd.">
+  <NewsListing
+    crumbs={[{ label: 'Home', href: withBase('/') }, { label: 'News' }]}
+    title="News"
+    intro="Explore news and updates from BaseNET Technology Sdn Bhd."
+    {categories}
+    {view}
+    {featured}
+    loadMore
+    hrefForPage={(n) => withBase(n === 1 ? '/news' : `/news/page/${n}`)}
+  />
+  <ContactCta slot="cta" />
+</Layout>

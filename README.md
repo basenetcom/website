@@ -16,7 +16,7 @@ pnpm install
 pnpm dev
 ```
 
-The dev server runs at <http://localhost:4321/basenet-web/>. The site is served under the `/basenet-web` base path (see [Deployment](#deployment)), so the bare `localhost:4321/` URL will not show the site.
+The dev server runs at <http://localhost:4321/>. The site is served from the root of its custom domain, so there is no base path. Internal links still go through `withBase()` in `src/nav.ts`, so a base path can be added later in `astro.config.mjs` without touching the pages.
 
 | Command        | Action                                           |
 | :------------- | :----------------------------------------------- |
@@ -32,19 +32,26 @@ The dev server runs at <http://localhost:4321/basenet-web/>. The site is served 
 /
 ├── public/                  Favicons
 ├── src/
-│   ├── assets/              Images processed by Astro (hero photo, logo, brand logos, training icons)
+│   ├── assets/              Images processed by Astro: brands/, training/, staff/, news/, hero photo, logo
 │   ├── components/
-│   │   ├── header/          Top bar, logo, main nav, staff dropdown
-│   │   ├── footer/          Footer sections
+│   │   ├── header/ footer/  Site chrome (top bar, nav, staff dropdown, footer)
 │   │   ├── Hero, AboutUs, Solutions, CorporateTraining, LogoCloud, ContactCta   Home page sections
-│   │   ├── Carousel, BackToTop                                                  Reusable interactive pieces
-│   │   └── InquiryForm, FormField, ContactInfo                                  Contact page
+│   │   ├── Carousel, BackToTop, PageHero, FilterChips, Pagination               Reusable pieces
+│   │   ├── InquiryForm, FormField, ContactInfo                                  Contact page
+│   │   ├── TrainingCard, CourseDetail, ProgramIcon                              Training
+│   │   ├── StaffDirectory, StaffCard                                            Staff
+│   │   └── NewsListing, NewsCard                                                News
+│   ├── content/             Markdown content, one file per item (see "Content")
+│   │   └── training/ staff/ departments/ news/ news-categories/
+│   ├── content.config.ts    Schema for every content collection
+│   ├── lib/                 content.ts (shared helpers), training.ts, staff.ts, news.ts (loaders)
 │   ├── layouts/Layout.astro Page shell (header, footer, back-to-top, per-page title)
-│   ├── pages/               index.astro (home), contact.astro
+│   ├── pages/               index, contact, training, staff/, news/
 │   ├── styles/global.css    Tailwind import and design tokens
 │   ├── nav.ts               Navigation links (shared by header and footer)
 │   └── site.config.ts       Company details and form settings
-└── astro.config.mjs         Site URL, base path, Inter font, Tailwind plugin
+├── .pages.yml               Pages CMS configuration (the editors' forms)
+└── astro.config.mjs         Site URL, Inter font, Tailwind plugin
 ```
 
 ## Where to change things
@@ -52,8 +59,38 @@ The dev server runs at <http://localhost:4321/basenet-web/>. The site is served 
 - **Company details** (name, phone, email, address, hours): `src/site.config.ts`.
 - **Navigation links**: `src/nav.ts`. Pass paths without the base prefix; `withBase()` adds it.
 - **Partner logos**: drop the image in `src/assets/brands/` and add it to the `brands` list (top row, scrolls right to left) or the `moreBrands` list (second row, scrolls left to right) in `src/components/LogoCloud.astro`. Each row's scroll speed adjusts to its number of logos.
-- **Training courses**: the `courses` list in `src/components/CorporateTraining.astro`. The carousel shows chevrons only when the cards don't all fit.
+- **Content** (training, staff, departments, news): Markdown files in `src/content/`; see "Content" below. Non-developers use [Pages CMS](#managing-content-pages-cms).
 - **Page title and description**: pass `title` and `description` to `<Layout>`.
+
+## Content
+
+All editable content is Markdown: structured fields in the frontmatter, optional rich text in the body. Add, edit or delete a file and the site updates on the next build.
+
+| Folder | One file is | Where it appears |
+| :-- | :-- | :-- |
+| `src/content/training/` | a training programme | Home section and `/training` |
+| `src/content/staff/` | a person | `/staff` (directors and department heads) and `/staff/<department>` |
+| `src/content/departments/` | a department | the tabs and `/staff/<file name>` pages (file name is the address) |
+| `src/content/news/` | a news article (Markdown body is the article text) | `/news`, `/news/category/<category>`, `/news/page/<n>` and `/news/<file name>` |
+| `src/content/news-categories/` | a news category | the filter chips and `/news/category/<file name>` |
+
+Images live in `src/assets/<training|staff|news>/` and are matched by file name, whatever folder path is written in the content. News: the newest article marked `featured` fills the "Featured news" slot; `draft: true` hides an article; lists show 6 articles per page (`PAGE_SIZE` in `src/lib/news.ts`).
+
+The schemas are in `src/content.config.ts`. Staff and department names shown in the seed content come from the Figma designs and should be confirmed by BaseNET before publishing.
+
+**Bad content.** Because editors are non-developers, the site is forgiving rather than strict. Values are trimmed and cleaned; an item with no name or title is skipped; a missing or misspelled image shows a placeholder; an unknown department or category is ignored; a bad date or order falls back to a default. Each problem is printed as a build warning (a yellow annotation on the GitHub Actions run, naming the file), so check the Actions log if something doesn't show up. The one thing that can still fail a build is invalid frontmatter syntax, which only happens when someone edits a file by hand; the previous version of the site stays live in that case.
+
+## Managing content (Pages CMS)
+
+Editors can add, edit and delete content in web forms instead of editing Markdown. [Pages CMS](https://pagescms.org) edits the files in this repository directly; every save is a commit to `main`, which triggers the normal GitHub Pages deployment (usually live within a few minutes). The forms are defined in `.pages.yml`.
+
+One-time setup (see the [Pages CMS docs](https://pagescms.org/docs/) for details):
+
+1. Sign in at <https://app.pagescms.org> with a GitHub account that has admin access to this repository, and add the repository (this installs the Pages CMS GitHub App).
+2. Invite editors as collaborators in Pages CMS.
+3. Check the setup once: edit and save an item in each collection, upload a test image, and confirm the commit appears and the site rebuilds. Things worth confirming: that new files get sensible names (the file name is the page address), that the Category and Department pickers save a value the site recognises, and that the article body editor saves Markdown.
+
+If you add a field, change `src/content.config.ts` (the site's schema) and `.pages.yml` (the editor's form) together so they stay in sync.
 
 ## Design tokens
 
@@ -81,8 +118,8 @@ The site targets WCAG 2.2 AA. Notable decisions:
 
 ## Deployment
 
-Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages at <https://new.basenet.com.my>. If the repository or its URL changes, update `site` and `base` in `astro.config.mjs`.
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages at <https://new.basenet.com.my>. If the domain changes, update `site` in `astro.config.mjs` (and `public/CNAME`).
 
 ## Known gaps
 
-- Navigation links to Solutions, Brands, News, Staff and Training, and the Privacy Policy link, point to pages that don't exist yet and return 404.
+- The navigation links to Our Solutions (`/solution`) and Brands (`/brands`), the other Staff dropdown items (LMS, HRMS, E-Car, Webmail, Cloud Data) and the Privacy Policy link point to pages that don't exist yet and return 404.

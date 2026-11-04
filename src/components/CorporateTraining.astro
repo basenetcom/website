@@ -2,9 +2,8 @@
 import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import Carousel from './Carousel.astro';
 import TrainingCard from './TrainingCard.astro';
-import excel from '../assets/training/excel.png';
-import powerBi from '../assets/training/power-bi.png';
-import drone from '../assets/training/drone.jpg';
+import { getTrainingPrograms, displayTitle } from '../lib/training';
+import { withBase } from '../nav';
 
 interface Props {
   eyebrow?: string;
@@ -17,54 +16,42 @@ const {
   eyebrow = 'Corporate Training',
   title = 'Professional IT & Safety Training',
   description = 'Upskill your team with practical training programs designed for business productivity, data analysis and operational safety.',
-  action = { label: 'More Info', href: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/contact` },
+  action = { label: 'More Info', href: withBase('/training') },
 } = Astro.props;
 
-const courses = [
-  {
-    image: excel,
-    title: 'Microsoft Excel',
-    description:
-      'Build stronger reporting, forecasting and data workflows with hands-on Excel training tailored for business teams.',
-    focus: ['Reporting', 'Analysis', 'Automation'],
-  },
-  {
-    image: powerBi,
-    title: 'Power BI (Coming Soon)',
-    description:
-      'Turn data into clear insights with guided Power BI training that helps teams visualize performance and make better decisions.',
-    focus: ['Dashboards', 'Visuals', 'Storytelling'],
-  },
-  {
-    image: drone,
-    title: 'Drone Operation (Coming Soon)',
-    description:
-      'Equip your team with safe drone handling, operational best practices and practical field skills for inspection and monitoring.',
-    focus: ['Safety', 'Handling', 'Field operations'],
-  },
-];
+const programs = await getTrainingPrograms();
+const courses = programs.map((p) => ({
+  image: p.icon,
+  title: displayTitle(p),
+  description: p.data.summary,
+  focus: p.data.focus,
+}));
 ---
 
-<section aria-labelledby="training-title" class="bg-brand-100">
-  <div class="mx-auto max-w-6xl px-8 py-section">
-    <header class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
-      <div class="font-semibold text-brand-900 lg:max-w-xl">
-        <p class="text-2xl uppercase">{eyebrow}</p>
-        <h2 id="training-title" class="mt-3.5 text-4xl/tight sm:text-display">{title}</h2>
+{
+  courses.length > 0 && (
+    <section aria-labelledby="training-title" class="bg-brand-100">
+      <div class="mx-auto max-w-6xl px-8 py-section">
+        <header class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+          <div class="font-semibold text-brand-900 lg:max-w-xl">
+            <p class="text-2xl uppercase">{eyebrow}</p>
+            <h2 id="training-title" class="mt-3.5 text-4xl/tight sm:text-display">{title}</h2>
+          </div>
+          <p class="max-w-prose text-body/[1.65] font-semibold text-copy lg:max-w-95">{description}</p>
+        </header>
+
+        <Carousel label="Training courses" itemsName="courses" class="mt-9">
+          {courses.map((course) => <TrainingCard {...course} />)}
+        </Carousel>
+
+        <a
+          href={action.href}
+          class="mt-9 inline-flex items-center gap-1.5 rounded-sm bg-brand-900 px-3.5 py-3 text-small/[1.2] font-semibold text-white transition-colors hover:bg-brand-700 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 motion-reduce:transition-none"
+        >
+          {action.label}
+          <ArrowUpRight size={14} aria-hidden="true" />
+        </a>
       </div>
-      <p class="max-w-prose text-body/[1.65] font-semibold text-copy lg:max-w-95">{description}</p>
-    </header>
-
-    <Carousel label="Training courses" itemsName="courses" class="mt-9">
-      {courses.map((course) => <TrainingCard {...course} />)}
-    </Carousel>
-
-    <a
-      href={action.href}
-      class="mt-9 inline-flex items-center gap-1.5 rounded-sm bg-brand-900 px-3.5 py-3 text-small/[1.2] font-semibold text-white transition-colors hover:bg-brand-700 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 motion-reduce:transition-none"
-    >
-      {action.label}
-      <ArrowUpRight size={14} aria-hidden="true" />
-    </a>
-  </div>
-</section>
+    </section>
+  )
+}

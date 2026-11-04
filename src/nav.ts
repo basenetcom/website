@@ -18,7 +18,7 @@ export const NAV_LINKS: NavItem[] = [
       { label: 'E-Car', href: '/staff/e-car' },
       { label: 'Webmail', href: '/staff/webmail' },
       { label: 'Cloud Data', href: '/staff/cloud-data' },
-      { label: 'Staff Directory', href: '/staff/directory' },
+      { label: 'Staff Directory', href: '/staff' },
     ],
   },
   { label: 'Training', href: '/training' },

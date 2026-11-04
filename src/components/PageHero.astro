@@ -1,0 +1,44 @@
+---
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  crumbs: Crumb[];
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  titleId?: string;
+}
+
+const { crumbs, eyebrow, title, intro, titleId = 'page-title' } = Astro.props;
+---
+
+<section aria-labelledby={titleId} class="bg-brand-75">
+  <div class="mx-auto flex max-w-6xl flex-col gap-4 px-8 pt-8 pb-12">
+    <nav aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-copy">
+        {
+          crumbs.map((crumb, i) => (
+            <>
+              {i > 0 && <li aria-hidden="true">/</li>}
+              <li aria-current={i === crumbs.length - 1 ? 'page' : undefined} class:list={[i === crumbs.length - 1 && 'font-semibold text-brand-900']}>
+                {crumb.href && i < crumbs.length - 1 ? (
+                  <a href={crumb.href} class="rounded-sm hover:underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900">
+                    {crumb.label}
+                  </a>
+                ) : (
+                  crumb.label
+                )}
+              </li>
+            </>
+          ))
+        }
+      </ol>
+    </nav>
+    <p class="text-caption font-semibold uppercase tracking-[0.08em] text-brand-900">{eyebrow}</p>
+    <h1 id={titleId} class="text-4xl/[1.1] font-bold tracking-tight text-brand-900 sm:text-5xl/[1.1]">{title}</h1>
+    {intro && <p class="max-w-3xl text-lg/[1.6] text-copy">{intro}</p>}
+  </div>
+</section>

@@ -1,0 +1,37 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StaffDirectory from '../../components/StaffDirectory.astro';
+import ContactCta from '../../components/ContactCta.astro';
+import { BOARD_LABEL, getDepartments, getStaff } from '../../lib/staff';
+import { withBase } from '../../nav';
+
+export async function getStaticPaths() {
+  const departments = await getDepartments();
+  return departments.map((department) => ({ params: { department: department.id }, props: { departmentId: department.id } }));
+}
+
+const { departmentId } = Astro.props;
+const departments = await getDepartments();
+const department = departments.find((d) => d.id === departmentId)!;
+const people = await getStaff(departments);
+
+// Department heads (board members) first, then by display order.
+const members = people
+  .filter((p) => p.department?.id === department.id)
+  .sort((a, b) => Number(b.data.board) - Number(a.data.board) || a.data.order - b.data.order || a.data.name.localeCompare(b.data.name));
+
+const tabs = [
+  { label: BOARD_LABEL, href: withBase('/staff') },
+  ...departments.map((d) => ({ label: d.data.title, href: withBase(`/staff/${d.id}`), current: d.id === department.id })),
+];
+---
+
+<Layout title={department.heading} description={`Meet the ${department.data.title} team at BaseNET Technology Sdn Bhd.`}>
+  <StaffDirectory
+    crumbs={[{ label: 'Staff', href: withBase('/staff') }, { label: department.heading }]}
+    title={department.heading}
+    {tabs}
+    groups={[{ label: `${department.data.title} team`, people: members }]}
+  />
+  <ContactCta slot="cta" />
+</Layout>

@@ -1,0 +1,299 @@
+# Pages CMS configuration: https://pagescms.org/docs/configuration/
+# Lets editors manage training, staff, departments and news without touching code.
+# Everything is Markdown: structured fields live in the frontmatter, rich text in the body.
+# Schemas (what the site accepts) are in src/content.config.ts; keep the two in sync.
+
+media:
+  - name: training-icons
+    label: Training icons
+    input: src/assets/training
+    # Only the file name matters: the site looks the image up in the folder by name.
+    output: ../../assets/training
+    extensions: [png, jpg, jpeg, webp, svg]
+    rename: safe
+
+  - name: staff-photos
+    label: Staff photos
+    input: src/assets/staff
+    output: ../../assets/staff
+    extensions: [png, jpg, jpeg, webp]
+    rename: safe
+
+  - name: news-images
+    label: News images
+    input: src/assets/news
+    # Used for cover images and for images inserted into article text (relative to src/content/news/).
+    output: ../../assets/news
+    extensions: [png, jpg, jpeg, webp]
+    rename: safe
+
+content:
+  # ---------------------------------------------------------------- News
+  - name: news
+    label: News articles
+    type: collection
+    path: src/content/news
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: date
+      order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+        options:
+          maxlength: 120
+
+      - name: date
+        label: Publish date
+        type: date
+        options:
+          format: yyyy-MM-dd
+
+      - name: category
+        label: Category
+        type: reference
+        options:
+          collection: news-categories
+          value: "{primary}"
+          label: "{primary}"
+
+      - name: summary
+        label: Summary
+        type: text
+        required: true
+        description: Two or three sentences. Shown on cards and at the top of the article.
+
+      - name: image
+        label: Cover image
+        type: image
+        options:
+          media: news-images
+
+      - name: featured
+        label: Featured
+        type: boolean
+        description: Shown in the "Featured news" slot on the News page (the newest featured article wins).
+
+      - name: draft
+        label: Draft
+        type: boolean
+        description: Drafts are saved but not published on the site.
+
+      - name: body
+        label: Article text
+        type: rich-text
+        description: Use Heading 2 and Heading 3 for sections (the title is already Heading 1).
+        options:
+          media: news-images
+
+  - name: news-categories
+    label: News categories
+    type: collection
+    path: src/content/news-categories
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: order
+      order: asc
+    fields:
+      - name: title
+        label: Category name
+        type: string
+        required: true
+        description: Shown as a filter on the News page, e.g. "Events".
+      - name: order
+        label: Display order
+        type: number
+        description: Lower numbers appear first.
+
+  # ---------------------------------------------------------------- Staff
+  - name: staff
+    label: Staff
+    type: collection
+    path: src/content/staff
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: name
+      sort: order
+      order: asc
+    fields:
+      - name: name
+        label: Full name
+        type: string
+        required: true
+        options:
+          maxlength: 80
+
+      - name: role
+        label: Job title
+        type: string
+        options:
+          maxlength: 80
+
+      - name: department
+        label: Department
+        type: reference
+        description: Leave empty for directors.
+        options:
+          collection: departments
+          value: "{primary}"
+          label: "{primary}"
+
+      - name: board
+        label: Show on the Board of Directors tab
+        type: boolean
+        description: Turn on for directors and department heads.
+
+      - name: order
+        label: Display order
+        type: number
+        description: Lower numbers appear first.
+
+      - name: photo
+        label: Photo
+        type: image
+        description: Portrait photo, roughly 4:3. A placeholder icon is shown if empty.
+        options:
+          media: staff-photos
+
+  - name: departments
+    label: Departments
+    type: collection
+    path: src/content/departments
+    format: yaml-frontmatter
+    # The file name becomes the page address: "Corporate Admin.md" is shown at /staff/corporate-admin.
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: order
+      order: asc
+    fields:
+      - name: title
+        label: Tab name
+        type: string
+        required: true
+        description: For example "Corporate Admin".
+        options:
+          maxlength: 40
+      - name: heading
+        label: Page heading
+        type: string
+        description: For example "Corporate Admin Department". Defaults to the tab name plus "Department".
+        options:
+          maxlength: 80
+      - name: order
+        label: Display order
+        type: number
+        description: Lower numbers appear first.
+
+  # ------------------------------------------------------------- Training
+  - name: training
+    label: Training programmes
+    type: collection
+    path: src/content/training
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: order
+      order: asc
+    fields:
+      - name: title
+        label: Programme name
+        type: string
+        required: true
+        description: For example "Microsoft Excel". "(Coming Soon)" is added automatically when the switch below is on.
+        options:
+          maxlength: 60
+
+      - name: comingSoon
+        label: Coming soon
+        type: boolean
+        description: Shows "(Coming Soon)" after the name.
+
+      - name: order
+        label: Display order
+        type: number
+        required: true
+        description: Lower numbers appear first.
+
+      - name: icon
+        label: Icon
+        type: image
+        required: true
+        description: Square image, about 200 px or larger.
+        options:
+          media: training-icons
+
+      - name: category
+        label: Category
+        type: string
+        required: true
+        description: Small label above the name on the Training page, e.g. "Business productivity".
+        options:
+          maxlength: 40
+
+      - name: summary
+        label: Card summary
+        type: text
+        required: true
+        description: Short description shown on the programme cards (about two sentences).
+
+      - name: tagline
+        label: One-line introduction
+        type: string
+        required: true
+        description: Shown beside the learning topics on the Training page.
+        options:
+          maxlength: 140
+
+      - name: focus
+        label: Focus areas
+        type: string
+        required: true
+        list:
+          min: 1
+        description: Short keywords shown at the bottom of the cards, e.g. "Reporting".
+
+      - name: topics
+        label: Learning topics
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: title
+            label: Topic
+            type: string
+            required: true
+          - name: description
+            label: Description
+            type: text
+            required: true
+
+      - name: applications
+        label: In your business
+        type: object
+        fields:
+          - name: intro
+            label: Introduction
+            type: text
+            required: true
+          - name: items
+            label: Examples
+            type: string
+            list: true
+
+      - name: body
+        label: Extra details (optional)
+        type: rich-text
+        description: Optional formatted text shown under the learning topics on the Training page.
+        options:
+          media: false

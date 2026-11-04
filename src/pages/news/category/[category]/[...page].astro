@@ -1,0 +1,50 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import NewsListing from '../../../../components/NewsListing.astro';
+import ContactCta from '../../../../components/ContactCta.astro';
+import { getArticles, getCategories, paginate } from '../../../../lib/news';
+import { withBase } from '../../../../nav';
+
+/** /news/category/<category> and /news/category/<category>/<page> for pages 2..N. */
+export async function getStaticPaths() {
+  const categories = await getCategories();
+  const articles = await getArticles(categories);
+  return categories.flatMap((category) => {
+    const { totalPages } = paginate(
+      articles.filter((a) => a.category?.id === category.id),
+      1,
+    );
+    return Array.from({ length: totalPages }, (_, i) => ({
+      params: { category: category.id, page: i === 0 ? undefined : String(i + 1) },
+      props: { categoryId: category.id },
+    }));
+  });
+}
+
+const { categoryId } = Astro.props;
+const page = Number(Astro.params.page ?? 1);
+const categories = await getCategories();
+const category = categories.find((c) => c.id === categoryId)!;
+const articles = (await getArticles(categories)).filter((a) => a.category?.id === category.id);
+const view = paginate(articles, page);
+const base = `/news/category/${category.id}`;
+---
+
+<Layout title={`News: ${category.data.title}`} description={`${category.data.title} news from BaseNET Technology Sdn Bhd.`}>
+  <NewsListing
+    crumbs={[
+      { label: 'Home', href: withBase('/') },
+      { label: 'News', href: withBase('/news') },
+      ...(page > 1
+        ? [{ label: category.data.title, href: withBase(base) }, { label: `Page ${page}` }]
+        : [{ label: category.data.title }]),
+    ]}
+    title={`News — ${category.data.title}`}
+    intro="Browse more news and updates from BaseNET Technology Sdn Bhd."
+    {categories}
+    activeCategory={category.id}
+    {view}
+    hrefForPage={(n) => withBase(n === 1 ? base : `${base}/${n}`)}
+  />
+  <ContactCta slot="cta" />
+</Layout>

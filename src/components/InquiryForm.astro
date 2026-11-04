@@ -110,6 +110,14 @@ const interests = [
 <script>
   const form = document.querySelector<HTMLFormElement>('[data-inquiry-form]');
   if (form) {
+    // Deep links such as /contact?interest=Training preselect the matching area of interest.
+    const wanted = new URLSearchParams(location.search).get('interest')?.toLowerCase();
+    if (wanted) {
+      const radios = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="Area of interest"]'));
+      const match = radios.find((r) => r.value.toLowerCase() === wanted);
+      if (match) match.checked = true;
+    }
+
     form.noValidate = true; // we show our own, accessible messages
 
     type Control = HTMLInputElement | HTMLTextAreaElement;

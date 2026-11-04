@@ -1,0 +1,171 @@
+---
+import { Image } from 'astro:assets';
+import ImageIcon from '@lucide/astro/icons/image';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import ArrowDown from '@lucide/astro/icons/arrow-down';
+import PageHero from './PageHero.astro';
+import FilterChips from './FilterChips.astro';
+import NewsCard from './NewsCard.astro';
+import Pagination from './Pagination.astro';
+import { formatDate, isoDate } from '../lib/content';
+import { withBase } from '../nav';
+import type { Article, Category, PageView } from '../lib/news';
+
+interface Props {
+  crumbs: { label: string; href?: string }[];
+  title: string;
+  intro: string;
+  categories: Category[];
+  /** Id of the active category; undefined means "All news". */
+  activeCategory?: string;
+  view: PageView<Article>;
+  /** URL of page n of this list. */
+  hrefForPage: (n: number) => string;
+  /** Article shown in the "Featured news" slot above the list (first page of "All news" only). */
+  featured?: Article;
+  /** Replace the numbered pagination with a "Load more news" button (first page of "All news"). */
+  loadMore?: boolean;
+}
+
+const { crumbs, title, intro, categories, activeCategory, view, hrefForPage, featured, loadMore = false } = Astro.props;
+
+const chips = [
+  { label: 'All news', href: withBase('/news'), current: !activeCategory },
+  ...categories.map((c) => ({
+    label: c.data.title,
+    href: withBase(`/news/category/${c.id}`),
+    current: c.id === activeCategory,
+  })),
+];
+const hasMore = view.page < view.totalPages;
+---
+
+<PageHero {crumbs} eyebrow="Company news" {title} {intro} />
+
+<div class="bg-white">
+  <div class="mx-auto flex max-w-6xl flex-col gap-14 px-8 py-14">
+    {
+      featured && (
+        <section aria-labelledby="featured-news-title" class="flex flex-col gap-5">
+          <h2 id="featured-news-title" class="text-2xl font-semibold text-brand-900 sm:text-heading">Featured news</h2>
+          <article class="relative flex flex-col overflow-hidden rounded-lg border border-brand-100 bg-white transition-shadow focus-within:shadow-md hover:shadow-md motion-reduce:transition-none lg:flex-row">
+            <div class="flex h-64 items-center justify-center bg-brand-75 text-muted lg:h-auto lg:min-h-80 lg:w-[48%] lg:shrink-0">
+              {featured.image ? (
+                <Image src={featured.image} alt="" width={960} height={640} loading="eager" class="size-full object-cover" />
+              ) : (
+                <ImageIcon size={32} aria-hidden="true" />
+              )}
+            </div>
+            <div class="flex flex-1 flex-col justify-center gap-4 p-8">
+              <div class="flex items-baseline gap-4 text-caption">
+                {featured.category && <span class="font-semibold text-brand-900">{featured.category.data.title}</span>}
+                {featured.data.date && (
+                  <time datetime={isoDate(featured.data.date)} class="text-muted">{formatDate(featured.data.date)}</time>
+                )}
+              </div>
+              <h3 class="text-3xl/[1.2] font-semibold text-brand-900 sm:text-heading">
+                <a
+                  href={withBase(`/news/${featured.id}`)}
+                  class="rounded-sm after:absolute after:inset-0 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900"
+                >
+                  {featured.data.title}
+                </a>
+              </h3>
+              {featured.data.summary && <p class="text-body/[1.6] text-copy">{featured.data.summary}</p>}
+              <p aria-hidden="true" class="flex items-center gap-2 text-small font-semibold text-brand-900">
+                Read article
+                <ArrowUpRight size={14} />
+              </p>
+            </div>
+          </article>
+        </section>
+      )
+    }
+
+    <section aria-labelledby="all-news-title" class="flex flex-col gap-6">
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h2 id="all-news-title" class="text-2xl font-semibold text-brand-900 sm:text-heading">All news</h2>
+        <p class="text-caption text-muted">
+          {view.total} {view.total === 1 ? 'article' : 'articles'}{view.totalPages > 1 && ` · Page ${view.page} of ${view.totalPages}`}
+        </p>
+      </div>
+
+      <FilterChips label="News categories" {chips} />
+
+      {
+        view.items.length > 0 ? (
+          <ul data-news-grid class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {view.items.map((article) => <NewsCard {article} />)}
+          </ul>
+        ) : (
+          <p class="rounded-lg border border-brand-100 bg-brand-50 p-8 text-center text-copy">No articles here yet. Please check back soon.</p>
+        )
+      }
+
+      <p data-news-status role="status" aria-live="polite" class="sr-only"></p>
+
+      {
+        loadMore && hasMore ? (
+          <div class="flex justify-center">
+            <a
+              href={hrefForPage(view.page + 1)}
+              data-load-more
+              class="inline-flex h-11 items-center gap-2.5 rounded-sm border border-brand-900 bg-white px-5 text-small font-semibold text-brand-900 transition-colors hover:bg-brand-75 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 motion-reduce:transition-none"
+            >
+              Load more news
+              <ArrowDown size={16} aria-hidden="true" />
+            </a>
+          </div>
+        ) : (
+          !loadMore && (
+            <div class="flex flex-col items-center gap-3">
+              <Pagination page={view.page} totalPages={view.totalPages} href={hrefForPage} />
+              {view.totalPages > 1 && (
+                <p class="text-caption text-muted">
+                  Page {view.page} of {view.totalPages} · Articles {view.first}–{view.last}
+                </p>
+              )}
+            </div>
+          )
+        )
+      }
+    </section>
+  </div>
+</div>
+
+<script>
+  // "Load more news" is a plain link to the next page (works without JS). With JS it appends that page's
+  // articles in place, moves focus to the first new article and announces how many were added.
+  const button = document.querySelector<HTMLAnchorElement>('[data-load-more]');
+  const grid = document.querySelector<HTMLElement>('[data-news-grid]');
+  const status = document.querySelector<HTMLElement>('[data-news-status]');
+
+  if (button && grid) {
+    button.addEventListener('click', async (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey) return;
+      event.preventDefault();
+      button.setAttribute('aria-busy', 'true');
+      try {
+        const res = await fetch(button.href);
+        if (!res.ok) throw new Error(String(res.status));
+        const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+        const added = Array.from(doc.querySelectorAll('[data-news-grid] > li'));
+        added.forEach((li) => grid.append(document.importNode(li, true)));
+
+        // Later pages show numbered pagination instead of a button, so also look for its "Next" link.
+        const nextLink = doc.querySelector<HTMLAnchorElement>('[data-load-more], nav[aria-label="Pagination"] a[rel="next"]');
+        if (nextLink) {
+          button.href = nextLink.href;
+        } else {
+          button.parentElement?.remove();
+        }
+        if (status) status.textContent = `${added.length} more ${added.length === 1 ? 'article' : 'articles'} loaded.`;
+        grid.children[grid.children.length - added.length]?.querySelector<HTMLAnchorElement>('a')?.focus();
+      } catch {
+        window.location.href = button.href; // fall back to a normal page load
+      } finally {
+        button.removeAttribute('aria-busy');
+      }
+    });
+  }
+</script>
