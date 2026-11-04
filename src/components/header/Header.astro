@@ -4,12 +4,70 @@ import Logo from './Logo.astro';
 import NavLinks from './NavLinks.astro';
 ---
 
-<header>
-  <TopBar />
-  <div class="bg-black">
-    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-8 py-4 md:flex-row">
-      <Logo />
-      <NavLinks />
-    </div>
+<!--
+  The contact top bar scrolls away normally; only the black bar is sticky (it must be a direct child of <body>
+  so it can stay stuck for the whole page).
+  - Scrolling down hides it (slides up), scrolling up shows it again. Without JS it simply stays stuck and visible.
+  - It is never hidden while keyboard focus is inside it, and it reappears when focus enters it (WCAG 2.4.11).
+  - prefers-reduced-motion: it still hides/shows, but without the slide animation.
+-->
+<TopBar />
+<header data-site-header class="site-header sticky top-0 z-50 bg-black">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-8 py-4 md:flex-row">
+    <Logo />
+    <NavLinks />
   </div>
 </header>
+
+<style is:global>
+  html {
+    /* Keep #anchor targets and focused elements from sitting under the sticky header. */
+    scroll-padding-top: 6rem;
+  }
+  .site-header {
+    transition: translate 0.3s ease-in-out;
+  }
+  .site-header[data-hidden] {
+    translate: 0 -100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  if (header) {
+    const DELTA = 8; // ignore tiny scroll jitter (trackpads, momentum)
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    const show = () => header.removeAttribute('data-hidden');
+
+    const update = () => {
+      ticking = false;
+      // Clamp: iOS rubber-banding reports values outside the real scroll range.
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const y = Math.max(0, Math.min(window.scrollY, max));
+      if (Math.abs(y - lastY) < DELTA) return;
+      const goingDown = y > lastY;
+      lastY = y;
+      if (!goingDown || y <= header.offsetHeight) show();
+      else if (!header.matches(':focus-within')) header.setAttribute('data-hidden', '');
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true },
+    );
+    header.addEventListener('focusin', show);
+  }
+</script>
