@@ -5,11 +5,12 @@ import ArrowUp from '@lucide/astro/icons/arrow-up';
 <!--
   Floating "Back to top". Render it as a direct child of <body>, right before the footer.
   - position: sticky + bottom: it floats at the bottom of the viewport while the page scrolls, and once the
-    page end is reached it comes to rest at its natural spot, overlapping the top of the footer (-mb-16).
+    page end is reached it comes to rest at its natural spot: just above the footer's top edge (16px gap),
+    so it never covers footer content. (-mt-14 + h-10 + mb-4 = 0, i.e. it takes no layout space.)
   - Hidden until the page is scrolled (JS toggles data-visible). Without JS it is always shown (`scripting` media query).
   - Hidden state uses visibility:hidden, so it is also removed from the tab order / accessibility tree.
 -->
-<div data-back-to-top class="pointer-events-none sticky bottom-6 z-40 mt-6 -mb-16 flex h-10 justify-end px-4 lg:px-12">
+<div data-back-to-top class="pointer-events-none sticky bottom-6 z-40 -mt-14 mb-4 flex h-10 justify-end px-4 lg:px-12">
   <a
     href="#top"
     class="back-to-top pointer-events-auto inline-flex items-center gap-1 rounded-full border border-brand-900 bg-white px-5 text-sm font-semibold uppercase text-brand-900 shadow-lg transition-[opacity,translate,background-color] duration-200 hover:bg-brand-50 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 motion-reduce:transition-none"

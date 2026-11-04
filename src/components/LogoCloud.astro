@@ -23,6 +23,12 @@ import canon from '../assets/brands/canon.png';
 import hikvision from '../assets/brands/hikvision.png';
 import dahua from '../assets/brands/dahua.png';
 import fingertec from '../assets/brands/fingertec.png';
+import ibm from '../assets/brands/ibm.png';
+import tplink from '../assets/brands/tplink.png';
+import omada from '../assets/brands/omada.png';
+import rightpower from '../assets/brands/rightpower.png';
+import sangfor from '../assets/brands/sangfor.png';
+import acronis from '../assets/brands/acronis.svg';
 
 interface Props {
   eyebrow?: string;
@@ -57,8 +63,21 @@ const brands = [
   { name: 'FingerTec', logo: fingertec },
 ];
 
-// ~10s per logo keeps the scroll speed constant however many partners are listed.
-const duration = `${brands.length * 10}s`;
+const moreBrands = [
+  { name: 'IBM', logo: ibm },
+  { name: 'TP-Link', logo: tplink },
+  { name: 'TP-Link Omada', logo: omada },
+  { name: 'Right Power', logo: rightpower },
+  { name: 'Sangfor', logo: sangfor },
+  { name: 'Acronis', logo: acronis },
+];
+
+// Row 1 scrolls right-to-left, row 2 left-to-right.
+// ~10s per logo keeps the scroll speed the same in both rows however many partners are listed.
+const rows = [
+  { label: 'Our technology partners', brands, reverse: false },
+  { label: 'More technology partners', brands: moreBrands, reverse: true },
+].map((row) => ({ ...row, duration: `${row.brands.length * 10}s` }));
 
 // One set is the real list; the second is a decorative copy that makes the loop seamless.
 const groups = [{ hidden: false }, { hidden: true }];
@@ -71,26 +90,30 @@ const groups = [{ hidden: false }, { hidden: true }];
       <h2 id="brands-title" class="mt-3.5 text-4xl/tight font-extrabold sm:text-display">{title}</h2>
     </header>
 
-    <div class="marquee mt-10" data-marquee style={`--duration: ${duration}`}>
-      <div class="marquee-viewport">
-        {
-          groups.map(({ hidden }) => (
-            <ul
-              class="marquee-group"
-              aria-label={hidden ? undefined : 'Our technology partners'}
-              aria-hidden={hidden ? 'true' : undefined}
-              inert={hidden}
-            >
-              {brands.map(({ name, logo }) => (
-                <li class="flex h-26 w-72 max-w-full shrink-0 items-center justify-center rounded-sm border border-brand-100 bg-white p-4">
-                  <Image src={logo} alt={hidden ? '' : name} height={64} loading="eager" fetchpriority="low" decoding="async" class="max-h-16 w-auto max-w-48 object-contain" />
-                </li>
+    <!-- Both rows pause together (hover / tap on the wrapper). -->
+    <div class="marquees mt-10 flex flex-col gap-5" data-marquee>
+      {
+        rows.map((row) => (
+          <div class="marquee" data-direction={row.reverse ? 'reverse' : undefined} style={`--duration: ${row.duration}`}>
+            <div class="marquee-viewport">
+              {groups.map(({ hidden }) => (
+                <ul
+                  class="marquee-group"
+                  aria-label={hidden ? undefined : row.label}
+                  aria-hidden={hidden ? 'true' : undefined}
+                  inert={hidden}
+                >
+                  {row.brands.map(({ name, logo }) => (
+                    <li class="flex h-26 w-72 max-w-full shrink-0 items-center justify-center rounded-sm border border-brand-100 bg-white p-4">
+                      <Image src={logo} alt={hidden ? '' : name} height={64} loading="eager" fetchpriority="low" decoding="async" class="max-h-16 w-auto max-w-48 object-contain" />
+                    </li>
+                  ))}
+                </ul>
               ))}
-            </ul>
-          ))
-        }
-      </div>
-
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -111,7 +134,7 @@ const groups = [{ hidden: false }, { hidden: true }];
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .marquee {
+    .marquees {
       --gap: 1.25rem;
     }
     .marquee-viewport {
@@ -134,12 +157,16 @@ const groups = [{ hidden: false }, { hidden: true }];
 
     /* Pause on hover (pointer devices only, so touch has no sticky hover) or on tap (see script) — WCAG 2.2.2. */
     @media (hover: hover) {
-      .marquee:hover .marquee-group {
+      .marquees:hover .marquee-group {
         animation-play-state: paused;
       }
     }
-    .marquee[data-paused='true'] .marquee-group {
+    .marquees[data-paused='true'] .marquee-group {
       animation-play-state: paused;
+    }
+    /* Second row runs the other way (left to right). */
+    .marquee[data-direction='reverse'] .marquee-group {
+      animation-direction: reverse;
     }
   }
 

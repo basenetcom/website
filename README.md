@@ -51,7 +51,7 @@ The dev server runs at <http://localhost:4321/basenet-web/>. The site is served 
 
 - **Company details** (name, phone, email, address, hours): `src/site.config.ts`.
 - **Navigation links**: `src/nav.ts`. Pass paths without the base prefix; `withBase()` adds it.
-- **Partner logos**: drop the image in `src/assets/brands/` and add it to the `brands` list in `src/components/LogoCloud.astro`. The scroll speed adjusts to the number of logos.
+- **Partner logos**: drop the image in `src/assets/brands/` and add it to the `brands` list (top row, scrolls right to left) or the `moreBrands` list (second row, scrolls left to right) in `src/components/LogoCloud.astro`. Each row's scroll speed adjusts to its number of logos.
 - **Training courses**: the `courses` list in `src/components/CorporateTraining.astro`. The carousel shows chevrons only when the cards don't all fit.
 - **Page title and description**: pass `title` and `description` to `<Layout>`.
 
