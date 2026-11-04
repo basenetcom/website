@@ -3,7 +3,17 @@ import "../styles/global.css";
 import { Font } from "astro:assets";
 import Header from "../components/header/Header.astro";
 import Footer from "../components/footer/Footer.astro";
+import BackToTop from "../components/BackToTop.astro";
 import { SITE_NAME } from "../site.config";
+
+interface Props {
+	/** Page name; rendered as "<title> | Basenet". Omit on the home page. */
+	title?: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
 ---
 
 <!doctype html>
@@ -14,19 +24,16 @@ import { SITE_NAME } from "../site.config";
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{SITE_NAME}</title>
+		<title>{pageTitle}</title>
+		{description && <meta name="description" content={description} />}
 		<Font cssVariable="--font-inter" preload />
 	</head>
 	<body id="top">
-		<a
-			href="#main"
-			class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:text-black"
-			>Skip to main content</a
-		>
 		<Header />
 		<main id="main">
 			<slot />
 		</main>
+		<BackToTop />
 		{
 			Astro.slots.has("cta") ? (
 				<Footer>
@@ -46,6 +53,5 @@ import { SITE_NAME } from "../site.config";
 	body {
 		margin: 0;
 		width: 100%;
-		height: 100%;
 	}
 </style>

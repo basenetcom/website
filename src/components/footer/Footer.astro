@@ -1,6 +1,5 @@
 ---
 import type { ImageMetadata } from 'astro';
-import ArrowUp from '@lucide/astro/icons/arrow-up';
 import FooterCompany from './FooterCompany.astro';
 import FooterNav from './FooterNav.astro';
 import FooterContact from './FooterContact.astro';
@@ -15,15 +14,7 @@ const hasCta = Astro.slots.has('cta');
 ---
 
 <div class="relative bg-brand-900">
-  <a
-    href="#top"
-    class="absolute top-6 right-8 hidden items-center gap-1 rounded-full bg-white px-5 py-2.5 text-sm font-semibold uppercase text-brand-900 transition-colors hover:bg-brand-50 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transition-none lg:inline-flex"
-  >
-    Back to <span class="sr-only">top</span>
-    <ArrowUp size={16} aria-hidden="true" />
-  </a>
-
-  <div class:list={['mx-auto flex max-w-7xl flex-col gap-10 px-8 pb-6 md:pb-8', hasCta ? 'pt-12 lg:pt-15' : 'pt-8']}>
+  <div class:list={['mx-auto flex max-w-6xl flex-col gap-10 px-8 pb-6 md:pb-8', hasCta ? 'pt-12 lg:pt-15' : 'pt-8']}>
     {hasCta && <slot name="cta" />}
 
     <footer class:list={['flex flex-col gap-7 md:gap-8', hasCta && 'border-t border-brand-800 pt-8']}>

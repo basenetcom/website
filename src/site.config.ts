@@ -8,7 +8,12 @@ export const COMPANY = {
     href: 'tel:+60389290000',
   },
   email: 'sales@basenet.com.my',
-  // TODO: fill in the real company address
-  address: '',
+  address: 'Paragon Point, B-01-2, Jalan Medan Bangi, PB5 Pusat, 43650 Bandar Baru Bangi, Selangor',
   operatingHours: 'Mon-Fri 8 am-5 pm',
 } as const;
+
+/**
+ * Where the inquiry form POSTs its JSON (e.g. a Formspree / Web3Forms / Cloudflare Worker URL).
+ * Leave empty to fall back to opening the visitor's email app (mailto:).
+ */
+export const INQUIRY_ENDPOINT = '';

@@ -1,0 +1,122 @@
+---
+import ChevronLeft from '@lucide/astro/icons/chevron-left';
+import ChevronRight from '@lucide/astro/icons/chevron-right';
+
+interface Props {
+  /** Accessible name of the carousel, e.g. "Training courses". */
+  label: string;
+  /** Plural noun used in the button names, e.g. "courses" -> "Previous courses". */
+  itemsName?: string;
+  class?: string;
+}
+
+const { label, itemsName = 'items', class: className } = Astro.props;
+
+const button =
+  'absolute top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-brand-900 bg-white text-brand-900 shadow-md transition-colors hover:bg-brand-900 hover:text-white focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900 aria-disabled:cursor-not-allowed aria-disabled:border-brand-200 aria-disabled:bg-brand-50 aria-disabled:text-brand-200 aria-disabled:shadow-none motion-reduce:transition-none';
+---
+
+<!--
+  Accessible carousel (WCAG 2.2 AA):
+  - Native scroll-snap scroller: works without JS (swipe / scrollbar / keyboard arrows) and never auto-rotates (2.2.2).
+  - The scroller is focusable so keyboard users can scroll it (2.1.1); slides get role=group + "n of N" labels via JS.
+  - Chevron <button>s are a single-pointer alternative to swiping (2.5.7), 44px targets (2.5.8), ≥3:1 contrast (1.4.11).
+  - Buttons stay hidden until JS confirms there is more content than fits (no overflow -> no chevrons).
+-->
+<div
+  data-carousel
+  role="region"
+  aria-roledescription="carousel"
+  aria-label={label}
+  class:list={['relative', className]}
+>
+  <button type="button" data-carousel-prev hidden aria-label={`Previous ${itemsName}`} class:list={[button, 'left-0 -translate-x-1/2']}>
+    <ChevronLeft size={22} aria-hidden="true" />
+  </button>
+
+  <div
+    data-carousel-track
+    role="group"
+    tabindex="0"
+    aria-label={`${label} slides`}
+    class="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain scroll-smooth py-1 *:shrink-0 *:basis-full *:snap-start focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 motion-reduce:scroll-auto sm:*:basis-[calc((100%-1.25rem)/2)] lg:*:basis-[calc((100%-2.5rem)/3)]"
+  >
+    <slot />
+  </div>
+
+  <button type="button" data-carousel-next hidden aria-label={`Next ${itemsName}`} class:list={[button, 'right-0 translate-x-1/2']}>
+    <ChevronRight size={22} aria-hidden="true" />
+  </button>
+
+  <p data-carousel-status class="sr-only" role="status" aria-live="polite"></p>
+</div>
+
+<script>
+  function init(root: HTMLElement) {
+    const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    const status = root.querySelector<HTMLElement>('[data-carousel-status]');
+    if (!track || !prev || !next) return;
+
+    const slides = () => Array.from(track.children) as HTMLElement[];
+
+    // Slide semantics (APG carousel pattern); applied here so the no-JS fallback stays plain content.
+    slides().forEach((el, i, all) => {
+      el.setAttribute('role', 'group');
+      el.setAttribute('aria-roledescription', 'slide');
+      el.setAttribute('aria-label', `${i + 1} of ${all.length}`);
+    });
+    const setDisabled = (btn: HTMLButtonElement, disabled: boolean) =>
+      disabled ? btn.setAttribute('aria-disabled', 'true') : btn.removeAttribute('aria-disabled');
+
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      const overflowing = max > 1;
+      prev.hidden = next.hidden = !overflowing;
+      if (!overflowing) return;
+      const x = Math.abs(track.scrollLeft);
+      setDisabled(prev, x <= 1);
+      setDisabled(next, x >= max - 1);
+    };
+
+    const step = () => {
+      const first = slides()[0];
+      if (!first) return track.clientWidth;
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return first.offsetWidth + gap;
+    };
+
+    const announce = () => {
+      if (!status) return;
+      const box = track.getBoundingClientRect();
+      const visible = slides()
+        .map((el, i) => ({ i: i + 1, r: el.getBoundingClientRect() }))
+        .filter(({ r }) => r.left >= box.left - 1 && r.right <= box.right + 1);
+      if (!visible.length) return;
+      status.textContent = `Showing ${visible[0].i} to ${visible[visible.length - 1].i} of ${slides().length}`;
+    };
+
+    let announceTimer: number | undefined;
+    const move = (dir: 1 | -1, btn: HTMLButtonElement) => {
+      if (btn.getAttribute('aria-disabled') === 'true') return;
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      track.scrollBy({ left: dir * step(), behavior: reduce ? 'auto' : 'smooth' });
+      clearTimeout(announceTimer);
+      announceTimer = window.setTimeout(announce, reduce ? 50 : 500);
+    };
+
+    prev.addEventListener('click', () => move(-1, prev));
+    next.addEventListener('click', () => move(1, next));
+
+    let raf = 0;
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    }, { passive: true });
+    new ResizeObserver(update).observe(track);
+    update();
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(init);
+</script>

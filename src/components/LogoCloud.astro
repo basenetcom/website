@@ -1,11 +1,28 @@
 ---
 import { Image } from 'astro:assets';
-import Pause from '@lucide/astro/icons/pause';
-import Play from '@lucide/astro/icons/play';
 import panduit from '../assets/brands/panduit.png';
 import fluke from '../assets/brands/fluke.png';
 import cisco from '../assets/brands/cisco.png';
 import dell from '../assets/brands/dell.png';
+import microsoft from '../assets/brands/microsoft.png';
+import apple from '../assets/brands/apple.svg';
+import hp from '../assets/brands/hp.png';
+import lenovo from '../assets/brands/lenovo.png';
+import acer from '../assets/brands/acer.png';
+import asus from '../assets/brands/asus.png';
+import huawei from '../assets/brands/huawei.png';
+import h3c from '../assets/brands/h3c.png';
+import ruijie from '../assets/brands/ruijie.png';
+import aruba from '../assets/brands/aruba.png';
+import commscope from '../assets/brands/commscope.png';
+import axis from '../assets/brands/axis.svg';
+import apc from '../assets/brands/apc.png';
+import vertiv from '../assets/brands/vertiv.png';
+import epson from '../assets/brands/epson.png';
+import canon from '../assets/brands/canon.png';
+import hikvision from '../assets/brands/hikvision.png';
+import dahua from '../assets/brands/dahua.png';
+import fingertec from '../assets/brands/fingertec.png';
 
 interface Props {
   eyebrow?: string;
@@ -19,20 +36,42 @@ const brands = [
   { name: 'Fluke', logo: fluke },
   { name: 'Cisco', logo: cisco },
   { name: 'Dell', logo: dell },
+  { name: 'Microsoft', logo: microsoft },
+  { name: 'Apple', logo: apple },
+  { name: 'HP', logo: hp },
+  { name: 'Lenovo', logo: lenovo },
+  { name: 'Acer', logo: acer },
+  { name: 'ASUS', logo: asus },
+  { name: 'Huawei', logo: huawei },
+  { name: 'H3C', logo: h3c },
+  { name: 'Ruijie', logo: ruijie },
+  { name: 'Aruba', logo: aruba },
+  { name: 'CommScope', logo: commscope },
+  { name: 'Axis Communications', logo: axis },
+  { name: 'APC', logo: apc },
+  { name: 'Vertiv', logo: vertiv },
+  { name: 'Epson', logo: epson },
+  { name: 'Canon', logo: canon },
+  { name: 'Hikvision', logo: hikvision },
+  { name: 'Dahua', logo: dahua },
+  { name: 'FingerTec', logo: fingertec },
 ];
+
+// ~10s per logo keeps the scroll speed constant however many partners are listed.
+const duration = `${brands.length * 10}s`;
 
 // One set is the real list; the second is a decorative copy that makes the loop seamless.
 const groups = [{ hidden: false }, { hidden: true }];
 ---
 
 <section aria-labelledby="brands-title" class="bg-white">
-  <div class="mx-auto max-w-7xl px-8 py-section">
+  <div class="mx-auto max-w-6xl px-8 py-section">
     <header class="text-center text-brand-900">
       <p class="text-xl font-semibold uppercase">{eyebrow}</p>
       <h2 id="brands-title" class="mt-3.5 text-4xl/tight font-extrabold sm:text-display">{title}</h2>
     </header>
 
-    <div class="marquee mt-10" data-marquee>
+    <div class="marquee mt-10" data-marquee style={`--duration: ${duration}`}>
       <div class="marquee-viewport">
         {
           groups.map(({ hidden }) => (
@@ -43,8 +82,8 @@ const groups = [{ hidden: false }, { hidden: true }];
               inert={hidden}
             >
               {brands.map(({ name, logo }) => (
-                <li class="flex h-26 w-72 shrink-0 items-center justify-center rounded-sm border border-brand-100 bg-white p-4">
-                  <Image src={logo} alt={hidden ? '' : name} height={64} class="max-h-16 w-auto max-w-48 object-contain" />
+                <li class="flex h-26 w-72 max-w-full shrink-0 items-center justify-center rounded-sm border border-brand-100 bg-white p-4">
+                  <Image src={logo} alt={hidden ? '' : name} height={64} loading="eager" fetchpriority="low" decoding="async" class="max-h-16 w-auto max-w-48 object-contain" />
                 </li>
               ))}
             </ul>
@@ -52,18 +91,6 @@ const groups = [{ hidden: false }, { hidden: true }];
         }
       </div>
 
-      <div class="marquee-controls mt-6 justify-center">
-        <button
-          type="button"
-          aria-pressed="false"
-          data-marquee-toggle
-          class="group inline-flex min-h-11 items-center gap-2 rounded-sm border border-brand-100 bg-white px-4 text-small font-medium text-brand-900 hover:bg-brand-50 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900"
-        >
-          <Pause size={16} class="group-aria-pressed:hidden" />
-          <Play size={16} class="hidden group-aria-pressed:block" />
-          Pause animation
-        </button>
-      </div>
     </div>
   </div>
 </section>
@@ -79,8 +106,7 @@ const groups = [{ hidden: false }, { hidden: true }];
     justify-content: center;
     gap: 1.25rem;
   }
-  .marquee-group[aria-hidden='true'],
-  .marquee-controls {
+  .marquee-group[aria-hidden='true'] {
     display: none;
   }
 
@@ -92,6 +118,7 @@ const groups = [{ hidden: false }, { hidden: true }];
       display: flex;
       gap: var(--gap);
       overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
       mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     }
     .marquee-group,
@@ -102,15 +129,15 @@ const groups = [{ hidden: false }, { hidden: true }];
       min-width: 100%;
       justify-content: space-around;
       gap: var(--gap);
-      animation: marquee-scroll 40s linear infinite;
-    }
-    .marquee-controls {
-      display: flex;
+      animation: marquee-scroll var(--duration, 40s) linear infinite;
     }
 
-    /* Pause on hover, on keyboard focus, or when the user presses the button (WCAG 2.2.2). */
-    .marquee:hover .marquee-group,
-    .marquee:focus-within .marquee-group,
+    /* Pause on hover (pointer devices only, so touch has no sticky hover) or on tap (see script) — WCAG 2.2.2. */
+    @media (hover: hover) {
+      .marquee:hover .marquee-group {
+        animation-play-state: paused;
+      }
+    }
     .marquee[data-paused='true'] .marquee-group {
       animation-play-state: paused;
     }
@@ -124,12 +151,12 @@ const groups = [{ hidden: false }, { hidden: true }];
 </style>
 
 <script>
+  // Touch devices have no hover: tapping the strip toggles pause/resume.
+  const touchOnly = matchMedia('(hover: none)');
   document.querySelectorAll<HTMLElement>('[data-marquee]').forEach((root) => {
-    const button = root.querySelector<HTMLButtonElement>('[data-marquee-toggle]');
-    button?.addEventListener('click', () => {
-      const paused = button.getAttribute('aria-pressed') !== 'true';
-      button.setAttribute('aria-pressed', String(paused));
-      root.dataset.paused = String(paused);
+    root.addEventListener('click', () => {
+      if (!touchOnly.matches) return;
+      root.dataset.paused = String(root.dataset.paused !== 'true');
     });
   });
 </script>

@@ -1,0 +1,199 @@
+---
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import FormField from './FormField.astro';
+import { COMPANY, INQUIRY_ENDPOINT } from '../site.config';
+import { withBase } from '../nav';
+
+const interests = [
+  'Networking',
+  'Server virtualization',
+  'Surveillance / access control',
+  'Structured / fiber / electrical cabling',
+  'Support & maintenance',
+  'System integration',
+  'Training',
+  'General inquiry',
+];
+---
+
+<!--
+  Inquiry form. Works without JS (native validation + mailto: fallback). With JS it validates inline,
+  moves focus to the first error (WCAG 3.3.1 / 3.3.3) and posts to INQUIRY_ENDPOINT when one is configured.
+-->
+<form
+  data-inquiry-form
+  method="post"
+  action={INQUIRY_ENDPOINT || `mailto:${COMPANY.email}`}
+  enctype={INQUIRY_ENDPOINT ? undefined : 'text/plain'}
+  data-endpoint={INQUIRY_ENDPOINT || undefined}
+  data-mailto={COMPANY.email}
+  class="flex min-w-0 flex-col gap-6"
+>
+  <div class="flex flex-col gap-2.5">
+    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+      <h1 class="text-3xl font-semibold text-brand-900 sm:text-heading">Make an inquiry</h1>
+      <p class="text-caption text-muted">* Required fields</p>
+    </div>
+    <p class="text-body/[1.6] text-copy">Share your details and a little about what you’re looking for.</p>
+  </div>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <FormField id="full-name" name="Full name" label="Full name" autocomplete="name" placeholder="Enter your full name" required requiredMessage="Enter your full name." />
+    <FormField id="company" name="Company" label="Company" autocomplete="organization" placeholder="Enter your company name" required requiredMessage="Enter your company name." />
+  </div>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <FormField id="email" name="Work email" label="Work email" type="email" autocomplete="email" placeholder="you@company.com" required requiredMessage="Enter your work email." invalidMessage="Enter a valid email address, for example you@company.com." />
+    <FormField id="phone" name="Phone" label="Phone" hint="(optional)" type="tel" autocomplete="tel" placeholder="Enter your phone number" pattern="[0-9+\(\)\-\s]{7,20}" invalidMessage="Enter a valid phone number, for example +60 3 8929 0000." />
+  </div>
+
+  <fieldset class="flex flex-col gap-2.5">
+    <legend class="mb-2.5 flex w-full items-baseline justify-between gap-4 text-small font-semibold text-brand-900">
+      <span>Area of interest <span aria-hidden="true" class="font-normal">*</span></span>
+      <span class="text-caption font-normal text-muted">Select one</span>
+    </legend>
+    <div class="grid gap-3 sm:grid-cols-2">
+      {
+        interests.map((interest, i) => (
+          <label class="flex min-h-9.5 cursor-pointer items-center gap-2.5 rounded-sm border border-muted bg-white px-3 py-2 text-caption text-copy has-checked:border-brand-900 has-checked:bg-brand-75 has-checked:font-semibold has-checked:text-brand-900 has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand-900">
+            <input
+              type="radio"
+              name="Area of interest"
+              value={interest}
+              required
+              checked={i === interests.length - 1}
+              class="size-3.5 shrink-0 accent-brand-900"
+            />
+            {interest}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <FormField id="message" name="Message" label="Message" multiline placeholder="Tell us about your requirements, project or questions about BaseNET." required requiredMessage="Enter a message." />
+
+  <div class="flex flex-col gap-1.5">
+    <label class="flex items-start gap-3 text-small/[1.6] text-copy">
+      <input
+        id="consent"
+        type="checkbox"
+        name="Privacy consent"
+        value="Agreed"
+        required
+        aria-describedby="consent-error"
+        data-required-message="Please agree to the Privacy Policy to send your inquiry."
+        class="mt-0.5 size-4.5 shrink-0 accent-brand-900"
+      />
+      <span>
+        I agree to {COMPANY.legalName} using my details to respond to this inquiry. I have read the{' '}
+        <a href={withBase('/privacy')} class="rounded-sm text-brand-900 underline hover:no-underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900">Privacy Policy</a>.{' '}
+        <span aria-hidden="true">*</span>
+      </span>
+    </label>
+    <p id="consent-error" data-error class="text-caption/[1.4] text-red-700" hidden></p>
+  </div>
+
+  <div class="flex flex-col items-start gap-3">
+    <button
+      type="submit"
+      class="inline-flex h-13 items-center gap-6 rounded-sm bg-brand-900 px-6 text-small font-semibold text-white transition-colors hover:bg-brand-700 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 disabled:cursor-wait disabled:opacity-70 motion-reduce:transition-none"
+    >
+      Send Inquiry
+      <ArrowRight size={18} aria-hidden="true" />
+    </button>
+    <!-- Announced politely; errors move focus to the first invalid field instead. -->
+    <p data-status role="status" aria-live="polite" class="text-small/[1.6] text-brand-900" hidden></p>
+  </div>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-inquiry-form]');
+  if (form) {
+    form.noValidate = true; // we show our own, accessible messages
+
+    type Control = HTMLInputElement | HTMLTextAreaElement;
+    const unique = Array.from(
+      form.querySelectorAll<Control>('input[required]:not([type=radio]), textarea[required], input[pattern], input[type=email]'),
+    ).filter((c, i, all) => all.indexOf(c) === i);
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+
+    const messageFor = (c: Control) => {
+      if (c.validity.valueMissing) return c.dataset.requiredMessage || 'This field is required.';
+      if (c.validity.typeMismatch || c.validity.patternMismatch) return c.dataset.invalidMessage || 'Enter a valid value.';
+      return '';
+    };
+
+    const check = (c: Control) => {
+      const msg = c.checkValidity() ? '' : messageFor(c);
+      const out = form.querySelector<HTMLElement>(`#${c.id}-error`);
+      if (msg) c.setAttribute('aria-invalid', 'true');
+      else c.removeAttribute('aria-invalid');
+      if (out) {
+        out.textContent = msg;
+        out.hidden = !msg;
+      }
+      return !msg;
+    };
+
+    // Re-validate a field as the user fixes it; never nag before the first submit attempt.
+    unique.forEach((c) => {
+      const recheck = () => {
+        if (c.getAttribute('aria-invalid') === 'true') check(c);
+      };
+      c.addEventListener('input', recheck);
+      c.addEventListener('change', recheck);
+    });
+
+    const say = (text: string) => {
+      status.textContent = text;
+      status.hidden = !text;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      say('');
+
+      const results = unique.map((c) => ({ c, ok: check(c) }));
+      const bad = results.filter((r) => !r.ok);
+      if (bad.length) {
+        bad[0].c.focus();
+        // Screen readers hear the count; the focused field's own error is read via aria-describedby.
+        say(`${bad.length} ${bad.length === 1 ? 'field needs' : 'fields need'} your attention.`);
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+      const endpoint = form.dataset.endpoint;
+
+      if (!endpoint) {
+        // No backend configured: open the visitor's mail client with the inquiry prefilled.
+        const body = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n');
+        const subject = `Website inquiry: ${data['Area of interest']}`;
+        window.location.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        say('Your email app should open with your inquiry ready to send.');
+        return;
+      }
+
+      submit.disabled = true;
+      form.setAttribute('aria-busy', 'true');
+      say('Sending your inquiry…');
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        say('Thank you. Your inquiry has been sent and we will get back to you soon.');
+      } catch {
+        say(`Sorry, we couldn’t send your inquiry. Please try again or email us at ${form.dataset.mailto}.`);
+      } finally {
+        submit.disabled = false;
+        form.removeAttribute('aria-busy');
+      }
+    });
+  }
+</script>

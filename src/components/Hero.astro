@@ -22,8 +22,8 @@ const {
 } = Astro.props;
 ---
 
-<section aria-labelledby="hero-title" class="bg-brand-50">
-  <div class="mx-auto grid max-w-7xl lg:grid-cols-2 lg:grid-rows-[1fr_auto]">
+<section aria-labelledby="hero-title" class="relative bg-brand-50">
+  <div class="mx-auto grid max-w-6xl lg:grid-cols-2 lg:grid-rows-[1fr_auto]">
     <div class="px-8 pt-12 sm:pt-16 lg:self-end lg:pt-24">
       <p class="text-sm font-semibold uppercase tracking-widest text-brand-900 lg:tracking-wide">{eyebrow}</p>
       <h1 id="hero-title" class="mt-6 text-4xl font-bold tracking-tight text-brand-900 sm:text-5xl lg:text-6xl">
@@ -42,6 +42,7 @@ const {
       </a>
     </div>
 
+    <!-- On lg+ the photo is pinned to the right half of the viewport (flush with the edge), while the text stays inside max-w-6xl. -->
     <!-- On mobile the tags overlay the bottom of the photo (same grid cell); a wash keeps them readable. -->
     <ul class="z-10 col-start-1 row-start-2 flex flex-wrap items-center gap-x-2 gap-y-1 self-end bg-linear-to-t from-brand-50 via-brand-50/90 to-transparent px-8 pt-12 pb-6 text-xs font-medium uppercase tracking-widest text-brand-900 lg:self-start lg:bg-none lg:pt-4 lg:pb-24 lg:tracking-wide">
       <li aria-hidden="true" class="mr-2 hidden h-px w-8 bg-brand-900 lg:block"></li>
@@ -57,11 +58,12 @@ const {
 
     {
       image && (
-        <div class="col-start-1 row-start-2 mt-10 min-h-80 px-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:px-0">
+        <div class="col-start-1 row-start-2 mt-10 min-h-80 px-8 lg:absolute lg:inset-y-0 lg:right-0 lg:mt-0 lg:min-h-0 lg:w-1/2 lg:px-0">
           <Image
             src={image}
             alt=""
             loading="eager"
+            fetchpriority="high"
             class="size-full min-h-80 object-cover mask-[linear-gradient(to_bottom,transparent,black_30%)] lg:mask-[linear-gradient(to_right,rgb(0_0_0/0.02),rgb(0_0_0/0.02)_7%,rgb(0_0_0/0.86)_51%,black)]"
           />
         </div>

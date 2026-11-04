@@ -1,0 +1,52 @@
+---
+import ArrowUp from '@lucide/astro/icons/arrow-up';
+---
+
+<!--
+  Floating "Back to top". Render it as a direct child of <body>, right before the footer.
+  - position: sticky + bottom: it floats at the bottom of the viewport while the page scrolls, and once the
+    page end is reached it comes to rest at its natural spot, overlapping the top of the footer (-mb-16).
+  - Hidden until the page is scrolled (JS toggles data-visible). Without JS it is always shown (`scripting` media query).
+  - Hidden state uses visibility:hidden, so it is also removed from the tab order / accessibility tree.
+-->
+<div data-back-to-top class="pointer-events-none sticky bottom-6 z-40 mt-6 -mb-16 flex h-10 justify-end px-4 lg:px-12">
+  <a
+    href="#top"
+    class="back-to-top pointer-events-auto inline-flex items-center gap-1 rounded-full border border-brand-900 bg-white px-5 text-sm font-semibold uppercase text-brand-900 shadow-lg transition-[opacity,translate,background-color] duration-200 hover:bg-brand-50 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand-900 motion-reduce:transition-none"
+  >
+    Back to <span class="sr-only">top</span>
+    <ArrowUp size={16} aria-hidden="true" />
+  </a>
+</div>
+
+<style>
+  @media (scripting: enabled) {
+    .back-to-top:not([data-visible]) {
+      opacity: 0;
+      visibility: hidden;
+      translate: 0 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  const link = document.querySelector<HTMLElement>('.back-to-top');
+  if (link) {
+    // Show once the user has scrolled roughly half a screen.
+    const threshold = () => Math.min(400, window.innerHeight * 0.5);
+    let raf = 0;
+    const update = () => {
+      link.toggleAttribute('data-visible', window.scrollY > threshold());
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      },
+      { passive: true },
+    );
+    window.addEventListener('resize', update);
+    update();
+  }
+</script>
