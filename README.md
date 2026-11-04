@@ -16,7 +16,7 @@ pnpm install
 pnpm dev
 ```
 
-The dev server runs at <http://localhost:4321/basenet-web/>. The site is served under the `/basenet-web` base path (see [Deployment](#deployment)), so the bare `localhost:4321/` URL will not show the site.
+The dev server runs at <http://localhost:4321/>. The site is served from the root of its custom domain, so there is no base path. Internal links still go through `withBase()` in `src/nav.ts`, so a base path can be added later in `astro.config.mjs` without touching the pages.
 
 | Command        | Action                                           |
 | :------------- | :----------------------------------------------- |
@@ -51,7 +51,7 @@ The dev server runs at <http://localhost:4321/basenet-web/>. The site is served 
 │   ├── nav.ts               Navigation links (shared by header and footer)
 │   └── site.config.ts       Company details and form settings
 ├── .pages.yml               Pages CMS configuration (the editors' forms)
-└── astro.config.mjs         Site URL, base path, Inter font, Tailwind plugin
+└── astro.config.mjs         Site URL, Inter font, Tailwind plugin
 ```
 
 ## Where to change things
@@ -118,7 +118,7 @@ The site targets WCAG 2.2 AA. Notable decisions:
 
 ## Deployment
 
-Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages at <https://new.basenet.com.my>. If the repository or its URL changes, update `site` and `base` in `astro.config.mjs`.
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages at <https://new.basenet.com.my>. If the domain changes, update `site` in `astro.config.mjs` (and `public/CNAME`).
 
 ## Known gaps
 
