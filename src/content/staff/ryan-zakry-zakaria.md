@@ -1,7 +1,7 @@
 ---
 name: Ryan Zakry Zakaria
-role: Executive Director
-department: ""
+role: Head of Business Strategy
 board: true
 order: 2
+photoPosition: top
 ---
