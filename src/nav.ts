@@ -4,9 +4,9 @@ export type NavItem = { label: string; href: string; children?: NavChild[] };
 /** Primary navigation, shared by the header and the footer. */
 export const NAV_LINKS: NavItem[] = [
   { label: 'Home', href: '/' },
-  { label: 'About Us', href: '#about' },
-  { label: 'Our Solutions', href: '/solution' },
-  { label: 'Brands', href: '/brands' },
+  { label: 'About Us', href: '/#about' },
+  { label: 'Our Solutions', href: '/#solution' },
+  { label: 'Brands', href: '/#brands' },
   { label: 'Contact Us', href: '/contact' },
   { label: 'News', href: '/news' },
   {
