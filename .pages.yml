@@ -73,6 +73,14 @@ content:
         options:
           media: news-images
 
+      - name: gallery
+        label: Photo gallery
+        type: image
+        list: true
+        description: Extra photos shown as a gallery under the article. Add as many as you like.
+        options:
+          media: news-images
+
       - name: featured
         label: Featured
         type: boolean

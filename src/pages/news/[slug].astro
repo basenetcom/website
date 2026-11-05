@@ -87,6 +87,33 @@ const backLink =
             </div>
           )
         }
+        {
+          article.gallery.length > 0 && (
+            <section aria-labelledby="gallery-title" class="flex flex-col gap-4">
+              <h2 id="gallery-title" class="text-2xl font-semibold text-brand-900">Photo gallery</h2>
+              <ul class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                {article.gallery.map((photo, i) => (
+                  <li>
+                    <a
+                      href={photo.src}
+                      target="_blank"
+                      rel="noopener"
+                      class="block overflow-hidden rounded-lg focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-900"
+                    >
+                      <Image
+                        src={photo}
+                        alt={`${title}, photo ${i + 1}`}
+                        width={600}
+                        height={450}
+                        class="aspect-4/3 w-full object-cover transition-transform hover:scale-105 motion-reduce:transition-none"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
         <div class="border-t border-brand-100 pt-6">
           <a href={newsHref} class={backLink}>
             <ArrowLeft size={18} aria-hidden="true" />

@@ -87,6 +87,8 @@ const news = defineCollection({
     summary: text,
     /** Cover image file in src/assets/news/; only the file name is used. */
     image: text,
+    /** Extra photo files in src/assets/news/; only the file names are used. */
+    gallery: textList,
     /** Shown in the "Featured news" slot on /news (the newest featured article wins). */
     featured: flag,
     /** Drafts are not published. */
