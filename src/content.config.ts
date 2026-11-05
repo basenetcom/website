@@ -63,6 +63,8 @@ const staff = defineCollection({
     order: sortOrder,
     /** Portrait file in src/assets/staff/; only the file name is used. */
     photo: text,
+    /** Which part of the photo stays visible when it is cropped to the card. Defaults to top. */
+    photoPosition: z.enum(['top', 'center', 'bottom']).catch('top'),
   }),
 });
 
