@@ -1,7 +1,8 @@
 ---
 name: Zarilhasreen Zulkiply
-role: Head of Corporate Admin
-department: Corporate Admin
+role: Head of Corporate Affair & Finance
+department: Corporate Affair & Finance
 board: true
 order: 5
+photoPosition: top
 ---
