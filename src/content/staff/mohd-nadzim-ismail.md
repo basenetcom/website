@@ -1,6 +1,6 @@
 ---
 name: Mohd Nadzim Ismail
-role: Draftsman
+role: Drafter
 department: Engineering
 board: false
 order: 4
