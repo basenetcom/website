@@ -9,7 +9,7 @@ export type Department = DepartmentEntry & { heading: string };
 export type Person = StaffEntry & { department: Department | null; photo: ImageMetadata | null };
 
 /** The first tab. It lives at /staff and lists directors and department heads. */
-export const BOARD_LABEL = 'Board of Directors';
+export const BOARD_LABEL = 'Top Management';
 export const BOARD_HEADING = 'Our Team';
 
 const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/staff/*.{png,jpg,jpeg,webp,svg}', { eager: true });
