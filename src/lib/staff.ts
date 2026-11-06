@@ -10,7 +10,7 @@ export type Person = StaffEntry & { department: Department | null; photo: ImageM
 
 /** The first tab. It lives at /staff and lists directors and department heads. */
 export const BOARD_LABEL = 'Top Management';
-export const BOARD_HEADING = 'Our Team';
+export const BOARD_HEADING = 'Top Management';
 
 const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/staff/*.{png,jpg,jpeg,webp,svg}', { eager: true });
 
