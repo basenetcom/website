@@ -9,7 +9,7 @@ export const COMPANY = {
   },
   email: 'sales@basenet.com.my',
 
-  address: 'Paragon Point, B-01-2, Jalan Medan PB5, 43650 Bandar Baru Bangi, Selangor',
+  address: 'Paragon Point, B-01-2, Jalan Medan PB 5, 43650 Bandar Baru Bangi, Selangor',
 
   supportEmail: 'support@basenet.com.my',
  
