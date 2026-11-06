@@ -1,5 +1,5 @@
 ---
-name: Md Ridwan MD Yusof
+name: Md Ridhwan Md Yusof
 role: Site Safety Supervisor
 department: Safety & Health
 board: false
