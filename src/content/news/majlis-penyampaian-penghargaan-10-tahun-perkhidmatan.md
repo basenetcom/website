@@ -23,7 +23,7 @@ summary: >-
 
   Majlis penyampaian hadiah penghargaan ini sebagai simbol penghargaan atas
   dedikasi mereka selama satu dekad bersama syarika
-image: ../../assets/news/50569880213291522192182196806860905905605241n.jpg
+image: ../../assets/news/photo2026-11-0616-02-56-1-1.jpg
 gallery:
   - ../../assets/news/50653348413291521058848973929100160386034426n.jpg
   - ../../assets/news/5056127671329151985884909925102187742229427n.jpg
