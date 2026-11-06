@@ -1,6 +1,6 @@
 ---
-name: Muhammad Nazrul Iskandar
-role: Network Engineer / IT Programmer
+name: Muhammad Nazrul Nazarudin
+role: Network Engineer / IT Engineer
 department: Engineering
 board: false
 order: 2
