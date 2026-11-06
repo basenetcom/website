@@ -1,5 +1,5 @@
 ---
-name: Mohd Suhaimi Shamsuddin
+name: Mohd Shuhaimi Shamsuddin
 role: Sr Sales Officer
 department: Business Strategy
 board: false
