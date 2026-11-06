@@ -4,4 +4,5 @@ role: Electrician PW4
 department: Engineering
 board: false
 order: 5
+photoPosition: top
 ---

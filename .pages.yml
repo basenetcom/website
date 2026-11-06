@@ -73,6 +73,14 @@ content:
         options:
           media: news-images
 
+      - name: gallery
+        label: Photo gallery
+        type: image
+        list: true
+        description: Extra photos shown as a gallery under the article. Add as many as you like.
+        options:
+          media: news-images
+
       - name: featured
         label: Featured
         type: boolean
@@ -158,9 +166,20 @@ content:
       - name: photo
         label: Photo
         type: image
-        description: Portrait photo, roughly 4:3. A placeholder icon is shown if empty.
+        description: Portrait photo, 4:5 (e.g. 800×1000). Frame head and shoulders with some space above the head, or it may be cropped. A placeholder icon is shown if empty.
         options:
           media: staff-photos
+
+      - name: photoPosition
+        label: Photo position
+        type: select
+        description: Which part of the photo to keep when it is cropped. Use "Top" for most photos; try "Center" or "Bottom" if the head looks cut off or too low.
+        default: top
+        options:
+          values:
+            - { value: top, label: Top }
+            - { value: center, label: Center }
+            - { value: bottom, label: Bottom }
 
   - name: departments
     label: Departments

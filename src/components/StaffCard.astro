@@ -8,14 +8,15 @@ interface Props {
 }
 
 const { person } = Astro.props;
-const { name, role } = person.data;
+const { name, role, photoPosition } = person.data;
+const positions = { top: 'object-top', center: 'object-center', bottom: 'object-bottom' };
 ---
 
 <li class="flex w-full flex-col overflow-hidden rounded-lg border border-brand-100 bg-white sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-3.75rem)/4)]">
-  <div class="flex h-36 items-center justify-center bg-brand-75">
+  <div class="flex aspect-[4/5] items-center justify-center bg-brand-75">
     {
       person.photo ? (
-        <Image src={person.photo} alt="" width={440} height={288} class="size-full object-cover object-top" />
+        <Image src={person.photo} alt="" width={440} height={550} class:list={['size-full object-cover', positions[photoPosition]]} />
       ) : (
         <span class="flex size-16 items-center justify-center rounded-full bg-brand-100 text-muted" aria-hidden="true">
           <User size={28} />

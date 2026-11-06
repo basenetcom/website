@@ -1,7 +1,8 @@
 ---
 name: Liyana Jallaludin
 role: Account Manager
-department: Corporate Admin
+department: Corporate Affair & Finance
 board: false
 order: 2
+photoPosition: top
 ---

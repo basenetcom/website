@@ -63,6 +63,8 @@ const staff = defineCollection({
     order: sortOrder,
     /** Portrait file in src/assets/staff/; only the file name is used. */
     photo: text,
+    /** Which part of the photo stays visible when it is cropped to the card. Defaults to top. */
+    photoPosition: z.enum(['top', 'center', 'bottom']).catch('top'),
   }),
 });
 
@@ -87,6 +89,8 @@ const news = defineCollection({
     summary: text,
     /** Cover image file in src/assets/news/; only the file name is used. */
     image: text,
+    /** Extra photo files in src/assets/news/; only the file names are used. */
+    gallery: textList,
     /** Shown in the "Featured news" slot on /news (the newest featured article wins). */
     featured: flag,
     /** Drafts are not published. */
