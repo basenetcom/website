@@ -1,5 +1,5 @@
 ---
-name: Nik Azrim Nik Yaakub
+name: Tc. Nik Azrim Nik Yaakub
 role: Head of HSE
 department: Safety & Health
 board: true
