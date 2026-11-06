@@ -1,0 +1,681 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { COMPANY } from '../../site.config';
+import { withBase } from '../../nav';
+
+type Clause = { n?: string; text: string };
+type Section = { n: string; title: string; clauses: Clause[] };
+
+const C = COMPANY.legalName;
+
+const sections: Section[] = [
+  {
+    n: '1',
+    title: 'Purpose',
+    clauses: [
+      {
+        text: 'The purpose of this Agreement is to establish a formal framework between the Purchaser and the Business Partner that will enable the Parties to work collaboratively in the pursuit of responsible business conduct throughout the supply chain involved in the provision of products and/or services to the Purchaser ("Supply Chain").',
+      },
+    ],
+  },
+  {
+    n: '2',
+    title: 'Agreement',
+    clauses: [
+      { text: 'In addition to this contract document the following attachments shall form an integrated, binding part of the Agreement:' },
+      { text: 'Attachment A: The Purchaser\'s Supplier Conduct Principles (the "Principles")' },
+      { text: 'Attachment B: Improvement Plan (relevant forms to be requested from the Purchaser if deemed necessary)' },
+    ],
+  },
+  {
+    n: '3',
+    title: 'Adherence to Supplier Conduct Principles (Attachment A)',
+    clauses: [
+      {
+        text: 'In consideration of the opportunity to be a sustainable business partner of the Purchaser, the Business Partner hereby agrees to conduct its business in conformity with the Principles and to remedy any areas of non-conformity with the Principles ("Non-conformity") in accordance with this Agreement.',
+      },
+    ],
+  },
+  {
+    n: '4',
+    title: "Business Partner's Monitoring Activities and Awareness Raising",
+    clauses: [
+      { n: '4.1', text: 'The Business Partner shall effectively monitor conformity with the Principles within its own organization.' },
+      {
+        n: '4.2',
+        text: 'The Business Partner shall ensure that all of its personnel are aware of the Principles and the requirements of this Agreement and are provided with appropriate training and guidelines to ensure conformity with the Principles.',
+      },
+    ],
+  },
+  {
+    n: '5',
+    title: 'Initial and Subsequent Improvement Plans',
+    clauses: [
+      {
+        n: '5.1',
+        text: 'To the extent Non-conformity is identified by the Parties at the time of entry into this Agreement such Non-conformity shall be recorded in an initial improvement plan acceptable to the Purchaser (acting reasonably), including established milestones for the Business Partner to remedy the Non-conformity (an "Initial Improvement Plan"), and will be included in Attachment B.',
+      },
+      {
+        n: '5.2',
+        text: 'Non-conformity that is identified after the date of this Agreement by the Business Partner or otherwise, including as a result of the Purchaser\'s monitoring pursuant to Section 7, shall be identified in an update to the Initial Improvement Plan (if applicable) acceptable to the Purchaser (acting reasonably), including established milestones for the Business Partner to remedy the identified Non-conformity (an "Improvement Plan"). Such Improvement Plan shall be submitted by the Business Partner to the Purchaser without undue delay and, upon acceptance by the Purchaser, included in Attachment B.',
+      },
+      {
+        n: '5.3',
+        text: 'The Business Partner shall take all steps that are necessary and appropriate to remedy any Non-conformity and to implement the Initial Improvement Plan and any Improvement Plan (as applicable) and shall bear all associated costs.',
+      },
+    ],
+  },
+  {
+    n: '6',
+    title: 'Notification of Non-conformity',
+    clauses: [
+      {
+        n: '6.1',
+        text: "Non-conformity within the Business Partner's organization not recorded in the Initial Improvement Plan shall be reported by the Business Partner to the Purchaser without undue delay upon its identification by the Business Partner.",
+      },
+      {
+        n: '6.2',
+        text: 'The Business Partner shall ensure that its personnel can speak of any concerns regarding Non-conformity, both internally and externally (including to the Purchaser), without the risk of negative repercussions.',
+      },
+    ],
+  },
+  {
+    n: '7',
+    title: "Purchaser's Monitoring Activities",
+    clauses: [
+      {
+        n: '7.1',
+        text: "The Purchaser and/or its authorized third party representative shall, at its sole discretion, be entitled to monitor and evaluate the Business Partner's conformity with the Agreement (including the Principles) by taking such steps as the Purchaser may consider appropriate for such purposes, including to perform audits and undertake unannounced on-site inspections, including the conduct of interviews with freely selected personnel, at the premises of the Business Partner, and/or construction sites and/or other locations where work is carried out on behalf of the Business Partner. The Business Partner shall cooperate in and facilitate such monitoring by or on behalf of the Purchaser, including by responding in a timely fashion to any request for information and/or for access to property and/or personnel.",
+      },
+      {
+        n: '7.2',
+        text: "The Purchaser and/or its authorized third-party representative shall not be required to give the Business Partner advance notice of any unannounced inspections for the purposes of Section 7.1, but such unannounced inspections shall be undertaken with due regard for any legitimate concerns of the Business Partner regarding business secrets and the Purchaser shall enter into an appropriate confidentiality agreement if reasonably requested by the Business Partner.",
+      },
+    ],
+  },
+  {
+    n: '8',
+    title: 'Sub-Business Partners',
+    clauses: [
+      {
+        n: '8.1',
+        text: 'The Business Partner shall incorporate the requirements of this Agreement (including the Principles) in any agreement the Business Partner has or enters into with its Business Partners (including its contractors, service providers and business partners) in the Supply Chain (the "Sub-Business Partners"). In respect of a Sub-Business Partner, if the Purchaser reasonably requests, the Business Partner shall provide the Purchaser with a copy of a signed contract with a Sub-Business Partner.',
+      },
+      {
+        n: '8.2',
+        text: 'The Business Partner shall (a) procure that any Sub-Business Partner incorporates the requirements of this Agreement (including the Principles) in any agreement which the Sub-Business Partner enters into with its Business Partners in the Supply Chain, and (b) facilitate the incorporation of the requirements of this Agreement (including the Principles) in contractual arrangements in each supply tier in the Supply Chain.',
+      },
+      {
+        n: '8.3',
+        text: 'In the event that the Business Partner becomes aware of Non-conformity by a Sub-Business Partner, the Business Partner shall notify the Purchaser without undue delay.',
+      },
+      {
+        n: '8.4',
+        text: 'The Business Partner shall effectively monitor the business of its Sub-Business Partners with respect to conformity with the Principles. Any such monitoring activities shall be conducted with due regard to any relevant guidance provided by the Purchaser and shall include unannounced on-site inspections and interviews conducted by the Business Partner with Sub-Business Partners selected by the Business Partner.',
+      },
+      {
+        n: '8.5',
+        text: "The Business Partner shall, so far as it lawfully can, facilitate any monitoring the Purchaser may seek, acting reasonably, to undertake in connection with Sub-Business Partners, including by providing information to the Purchaser concerning the Business Partner's monitoring in accordance with Section 8.4.",
+      },
+    ],
+  },
+  {
+    n: '9',
+    title: "Obligation to Drive for Improvements in Sub-Business Partners' Business",
+    clauses: [
+      {
+        n: '9.1',
+        text: "The Business Partner shall ensure the remediation of Non-conformity within a Sub-Business Partner's organization at no cost to the Purchaser. The Business Partner shall have due regard to the Purchaser's views on how Non-conformity in such Sub-Business Partner's business shall be remedied. The remedial actions shall be addressed in an improvement plan, including established milestones for remedial actions, acceptable to the Purchaser (acting reasonably).",
+      },
+      {
+        n: '9.2',
+        text: 'If any Sub-Business Partner acts in a way that would represent a material breach (ref. Section 12.2) of this Agreement (including the Principles), the Business Partner shall, with respect to the provision of products and/or services to the Purchaser, and if requested by the Purchaser (acting reasonably), promptly and at no additional cost to Purchaser replace the relevant Sub-Business Partner with another sub-Business Partner who can demonstrate that it conducts its business in conformity with this Agreement (including the Principles).',
+      },
+    ],
+  },
+  {
+    n: '10',
+    title: 'Information Handling by Purchaser',
+    clauses: [
+      { n: '10.1', text: 'Information on Non-conformity which is not publicly available shall be treated as confidential by the Purchaser.' },
+      {
+        n: '10.2',
+        text: 'The Purchaser shall be entitled, as a part of their ongoing public reporting, to publicly communicate information on Non-conformity by the Business Partner and/or Sub-Business Partners relating to the Supply Chain on an aggregated basis as long as the identity of the Business Partner and/or relevant Sub-Business Partners responsible for the Non-conformity is not revealed.',
+      },
+    ],
+  },
+  {
+    n: '11',
+    title: 'Term and Relationship with Effective Agreements',
+    clauses: [
+      {
+        n: '11.1',
+        text: 'The Parties agree that this Agreement shall remain in force and the Business Partner shall continue to remain bound by all the terms of this Agreement, for as long as the Purchaser has any other agreements in force and effect with the Business Partner, whether entered into prior to or after the signature of this agreement (hereinafter collectively referred to as "Effective Agreements").',
+      },
+      { n: '11.2', text: 'In the event of conflict between the provisions set out in this Agreement and any Effective Agreements, this Agreement shall prevail.' },
+    ],
+  },
+  {
+    n: '12',
+    title: 'Termination',
+    clauses: [
+      {
+        n: '12.1',
+        text: 'If there has been a material breach of this Agreement, the Purchaser may, should it consider it appropriate, engage in good faith discussions with the Business Partner to seek to identify steps to be taken by the Business Partner to address such material breach, but notwithstanding that option, the Purchaser shall be entitled, in its sole discretion to terminate any and/or all Effective Agreements, or if applicable, any purchase orders thereunder, in each case upon giving 14 calendar days written notice. Notwithstanding the foregoing, any breach of clause 8 (prohibited business practices) of the Principles shall entitle the Purchaser to terminate any and/or all Effective Agreements with immediate effect. The Business Partner agrees that the Purchaser shall also be entitled to seek appropriate remedies under applicable laws, including the right to require specific performance of any and all requirements of this Agreement.',
+      },
+      {
+        n: '12.2',
+        text: 'The following is a non-exhaustive list of circumstances that shall be regarded as a material breach of this Agreement:',
+      },
+      { n: '(a)', text: 'any breach of clause 8 (prohibited business practices) of the Principles;' },
+      { n: '(b)', text: 'any breach of clause 3.3 (forced labour) of the Principles;' },
+      { n: '(c)', text: 'any breach of Sections 8.1 and/or 8.2 of this Agreement;' },
+      { n: '(d)', text: 'any breach of Section 9.2 of this Agreement; and' },
+      {
+        n: '(e)',
+        text: 'where material Non-conformity persists and/or the Business Partner fails to take remedial actions identified in an Improvement Plan despite written demands by the Purchaser to the Business Partner to do so.',
+      },
+      {
+        n: '12.3',
+        text: 'The Business Partner agrees that if the Purchaser exercises the right to terminate any and/or all Effective Agreements with the Business Partner, due to material breach of this Agreement, this shall not be considered a breach on part of the Purchaser of any of the Effective Agreements that are terminated for this purpose and, consequently, the Purchaser shall have no liability to the Business Partner whatsoever in respect of such termination (including, without limitation, the payment of any fees) under such Effective Agreements.',
+      },
+      {
+        n: '12.4',
+        text: "Termination of this Agreement does not affect a Party's accrued rights and obligations at the time of termination. Sections 10, 15, 16 and 17 will survive termination and continue in full force and effect notwithstanding the termination of this Agreement.",
+      },
+    ],
+  },
+  {
+    n: '13',
+    title: 'Assignment',
+    clauses: [
+      {
+        text: 'Neither Party shall be entitled to assign this Agreement, in whole or in part, to any entity at any time, without the prior written permission of the other Party which shall not be unreasonably withheld.',
+      },
+    ],
+  },
+  {
+    n: '14',
+    title: 'Notices',
+    clauses: [
+      {
+        n: '14.1',
+        text: 'All notices under or in connection with this Agreement shall be in writing and delivered by hand, or sent by registered post or courier (with a copy sent by email) to the Party due to receive the notice.',
+      },
+      {
+        n: '14.2',
+        text: 'A notice is deemed given if (a) delivered by hand, on the day it was left at the address referred to in Section 14.1, or (b) sent by registered post or courier, 72 hours after posting it.',
+      },
+    ],
+  },
+  {
+    n: '15',
+    title: 'Choice-of-Law and Interpretation',
+    clauses: [
+      {
+        text: 'This Agreement shall be exclusively governed by and construed in accordance with the substantive laws of Malaysia. The Principles shall be interpreted in light of the relevant international conventions addressing the topics set out in the Principles (including, for example, the International Bill of Human Rights and the Core Conventions of the International Labour Organisation).',
+      },
+    ],
+  },
+  {
+    n: '16',
+    title: 'Dispute Resolution',
+    clauses: [
+      {
+        text: 'Any dispute, controversy or claim arising out of or in connection with this Agreement, including any non-contractual matters or obligations, or the breach, termination or invalidity thereof shall be exclusively settled by the courts of the state where the Purchaser has its registered business address.',
+      },
+    ],
+  },
+  {
+    n: '17',
+    title: 'Miscellaneous',
+    clauses: [
+      {
+        n: '17.1',
+        text: 'Entire Agreement. This Agreement represents the entire understanding between the Parties in relation to the subject matter hereof and supersedes all other agreements and representations made by either Party with respect to the subject matter herein, whether oral or written.',
+      },
+      { n: '17.2', text: 'Titles. Titles of the Sections of this Agreement are for convenience only and shall have no effect in the interpretation of this Agreement.' },
+      {
+        n: '17.3',
+        text: 'Amendments. This Agreement may only be modified if such modification is in writing and signed by a duly authorised representative of each Party hereto.',
+      },
+      {
+        n: '17.4',
+        text: 'Severability. If any part of this Agreement is determined to be invalid or unenforceable, the invalidity or unenforceability shall not affect or impair the rest of the Agreement, which shall be construed in all respects as if such invalid or unenforceable provisions were omitted, provided that the original intent of the Agreement is not thereby materially altered.',
+      },
+      {
+        n: '17.5',
+        text: 'No waiver. No waiver by either Party of any provision in this Agreement shall be binding unless expressly confirmed in writing. Further, any such waiver shall relate only to such particular matter, non-compliance, or breach as it expressly relates to and shall not apply to any subsequent or other matter, non-compliance, or breach.',
+      },
+      {
+        n: '17.6',
+        text: 'Cumulative rights. The rights and remedies contained in this Agreement are cumulative and are not exclusive of any rights or remedies provided by applicable laws.',
+      },
+      {
+        n: '17.7',
+        text: 'Third party rights. The Parties do not intend, and this Agreement shall not be construed as affording any person who is not a party to this Agreement any rights or benefits under this Agreement.',
+      },
+      {
+        n: '17.8',
+        text: 'Counterparts. This Agreement may be executed in any number of counterparts, each of which when executed and delivered is an original and all of which together evidence the same agreement.',
+      },
+    ],
+  },
+];
+
+const principles: Section[] = [
+  {
+    n: '1',
+    title: 'Relationship with Applicable Laws',
+    clauses: [
+      {
+        text: 'In addition to complying with the provisions of these Supplier Conduct Principles (hereinafter the "Principles"), the Business Partner shall comply with all national laws and all laws applicable to the Business Partner and its operations. Where the requirements of such applicable laws and the Principles differ, or are in conflict, the Business Partner shall comply with the highest standard consistent with applicable laws.',
+      },
+    ],
+  },
+  {
+    n: '2',
+    title: 'Human Rights',
+    clauses: [
+      {
+        text: 'The Business Partner shall respect internationally recognised human rights, including those expressed in the United Nations International Bill of Human Rights. The Business Partner shall conduct its business consistently with the United Nations Guiding Principles on Business and Human Rights.',
+      },
+    ],
+  },
+  {
+    n: '3',
+    title: 'Labour Rights and Working Conditions',
+    clauses: [
+      {
+        n: '3.1',
+        text: "Fundamental labour principles and rights. The Business Partner shall respect and comply to internationally recognized rights and principles as set out in the International Labour Organization's Core Conventions and Declaration on Fundamental Principles and Rights at Work.",
+      },
+      {
+        n: '3.2',
+        text: 'Freedom of Association and the Right to Collective Bargaining. The Business Partner shall recognise and respect the right to freedom of association and the right to collective bargaining of its employees and/or workers ("Worker" or "Workers") consistent with national laws and regulations. The Business Partner shall effectively inform Workers that they are free to join or not to join a Worker\'s organisation of their choosing consistent with national laws and regulations. Their doing so will not result in any negative consequences to them, or retaliation from the Business Partner. The Business Partner shall not interfere with the establishment, and operation of such Workers\' organisations. Where the right to freedom of association or to collective bargaining are restricted under national law, the Business Partner shall allow Workers to freely elect their own representatives.',
+      },
+      {
+        n: '3.3',
+        text: "Forced Labour. The Business Partner shall not employ or use any form of forced, bonded or compulsory labour, and shall strictly prohibit any form of slavery or human trafficking. The Business Partner shall at all times have a written policy in relation to such matters and shall ensure the policy's effective implementation within its organisation. In particular, the Business Partner shall establish and implement appropriate systems to ensure that no form of forced, bonded or compulsory labour, or slavery or human trafficking is employed or used within the Business Partner's operations and its supply chain. All work must be voluntary, and Workers shall be free to leave their employment upon giving reasonable notice. Workers shall not be required to lodge deposits, identity papers or work permits as a condition of employment.",
+      },
+      {
+        n: '3.4',
+        text: 'Child Labour. The Business Partner shall not employ or use child labour. A child means any person under 15 years of age, unless national laws and regulations stipulate a higher mandatory school leaving or minimum working age, in which case the higher age shall apply. "Child labour" means any work by a child unless it is considered acceptable under the International Labour Organization\'s Minimum Age Convention 1973 (No. 138). The Business Partner shall ensure that no child or any other person under the age of 18 performs any hazardous work, or work that is inconsistent with such person\'s personal development. In these Principles \'hazardous work\' means, but is not limited to, work which exposes the child or other person under the age of 18 to physical, psychological or sexual abuse; work underground, under water, at dangerous heights, in confined spaces; work with dangerous machinery, equipment and tools, or which involves the handling or transport of heavy loads; work in an unhealthy environment (including exposure to hazardous substances, agents or processes, temperatures, noise levels or vibrations potentially damaging to health); work under particularly difficult conditions such as work for long hours or at night or where the child or other person under the age of 18 is unreasonably confined to the premises of the Business Partner. If the Business Partner discovers a child employed, or that any child labour is used, by or on its behalf, the Business Partner shall take appropriate steps to address the situation immediately and the best interests of the child shall be the primary consideration. The Business Partner shall at all times have a written policy that clearly states the minimum age for Workers, and other requirements of this Principle and the Business Partner shall ensure the policy\'s effective implementation within its organisation. In particular, the Business Partner shall establish and implement appropriate systems to ensure that the Business Partner shall not employ or use child labour as set out in these Principles.',
+      },
+      {
+        n: '3.5',
+        text: 'Non-Discrimination. The Business Partner shall promote equality of opportunity and diversity in the workplace. The Business Partner shall not engage in or support any form of discrimination, including based on race, colour, age, sex, sexual orientation, pregnancy, language, disability, religion, political or other opinion, or social origin.',
+      },
+      {
+        n: '3.6',
+        text: 'Degrading treatment. All Workers shall be treated with respect and dignity. The Business Partner shall not tolerate any degrading treatment towards Workers, such as mental or sexual harassment, discriminatory gestures, language, or physical contact that is sexual, coercive, threatening, abusive or exploitative.',
+      },
+      {
+        n: '3.7',
+        text: "Employment Conditions. The Business Partner shall at a minimum comply with national laws and regulations. Workers shall be provided with a written employment contract, voluntarily signed by them, prior to performing any work at the Business Partner's facility that defines the terms and conditions of employment in a language understandable to the Worker. The Business Partner shall pay a fair and reasonable wage which shall, at minimum, comply with applicable legal and industry standards. This includes those relating to minimum wages, overtime hours and legally mandated benefits. The basis on which each worker is being paid is to be provided each such worker in a timely manner via pay stub or similar documentation. The Business Partner shall not use deductions from wages as a disciplinary measure. The Business Partner shall ensure that working hours do not exceed the maximum set by national laws and regulations. Business Partner shall ensure that all overtime work is voluntary and compensated at the prevailing overtime rates. The Business Partner shall ensure that Workers have the right to at least one day off following every six consecutive working days.",
+      },
+    ],
+  },
+  {
+    n: '4',
+    title: 'Health and Safety',
+    clauses: [
+      {
+        text: "The Business Partner shall promote the good health of Workers and shall provide and maintain a safe and secure working environment in accordance with applicable laws and internationally recognised standards. Hazards shall be identified, risk assessed, mitigated, and monitored and the necessary precautionary measures taken to prevent accidents, occupational diseases, and foreseeable emergency situations. The Business Partner shall establish and implement appropriate systems for recording, investigating, and implementing learning points from accidents and emergency situations. The Business Partner shall develop and implement a training programme designed to ensure that Workers are adequately educated on health and safety issues. This shall include the nomination and training of Workers at an appropriate level with responsibility for discharging the Business Partner's health and safety obligations. The Business Partner shall secure that, where it provides accommodation, it shall be clean, safe, and meet the basic needs of the Workers and, where appropriate, their families.",
+      },
+    ],
+  },
+  {
+    n: '5',
+    title: 'Environment',
+    clauses: [
+      {
+        text: 'The Business Partner shall take a precautionary approach towards environmental and climate challenges, ensure that responsible practices for managing environmental impacts are in place, and encourage the development and diffusion of environmentally friendly technologies. The Business Partner shall comply with applicable laws and internationally recognised standards. The Business Partner shall effectively implement an environmental management system in accordance with internationally recognised standards to the extent applicable to the Business Partner\'s operations. The Business Partner shall minimise its environmental impact and continuously improve its environmental and climate performance and work towards resource efficiency and sustainable waste management.',
+      },
+    ],
+  },
+  {
+    n: '6',
+    title: 'Conflict Minerals and Unsustainable Mined Minerals',
+    clauses: [
+      {
+        text: "To the extent applicable to the Business Partner's operations, the Business Partner shall have a written policy and procedure in place to avoid knowingly acquiring conflict minerals or unsustainable mined minerals produced at high environmental and social costs.",
+      },
+    ],
+  },
+  {
+    n: '7',
+    title: 'Data Privacy, Freedom of Expression, Data Protection and Cyber Security',
+    clauses: [
+      {
+        text: "The Business Partner shall appropriately recognize and respect privacy and freedom of expression within the Business Partner's operations. All the Company's data, which includes but is not limited to corporate, customer, and employee personal information, whether in physical or digital form, is strictly private and confidential. The Business Partner shall use due skill, care and diligence and implement adequate and documented security controls and take necessary precautions to protect any data against unauthorized or unlawful processing and against accidental loss, destruction, damage, alteration, or disclosure. If the Business Partner processes personal data, the Business Partner shall ensure that their employees and subcontractors receive appropriate training and awareness and have committed themselves to an obligation of data privacy and cyber security, which is required according to laws and regulations in order to safeguard the interests of the data subjects.",
+      },
+      { text: 'Furthermore, Business Partners are expected to:' },
+      { n: '•', text: 'Process the data according to its contractual obligations and local data protection laws and regulations' },
+      {
+        n: '•',
+        text: 'Implement appropriate governance, physical, technical, and organizational measures to ensure a level of security in line with the risk that the processing represents',
+      },
+      { n: '•', text: 'In terms of cybersecurity, where applicable, Business Partners are expected to:' },
+      {
+        n: 'i.',
+        text: 'Ensure any assets and systems they have been granted access to are protected from abuse and malware and to ensure and maintain a high level of confidentiality, integrity, and availability',
+      },
+      { n: 'ii.', text: 'Ensure provided access to Group systems is maintained at the lowest privilege level for authorized users only and promptly removed when no longer applicable' },
+      { n: 'iii.', text: 'Promptly notify the Company on all weaknesses in cybersecurity discovered' },
+      { n: 'iv.', text: 'Shall not by action or inaction allow the systems and applications in the Company be made vulnerable' },
+    ],
+  },
+  {
+    n: '8',
+    title: 'Prohibited Business Practices',
+    clauses: [
+      {
+        n: '8.1',
+        text: 'Competition. The Business Partner shall always meet competitors in an honest and professional manner. The Business Partner shall not cause or be part of any breach of applicable competition laws and regulations, such as illegal cooperation on pricing and illegal market sharing.',
+      },
+      {
+        n: '8.2',
+        text: 'Bribery, Corruption and Fraud. The Business Partner shall comply with applicable laws and regulations concerning bribery, corruption, and fraud. The Business Partner shall not offer, give, ask for, accept, or receive any form of bribe, facilitation payment or undue or improper advantage, favour or incentive to/from any public official, international organisation or any other third party (either in private or public sector), whether directly or through an intermediary. The Business Partner shall maintain an effective anti-corruption programme designed to ensure compliance with applicable anti-corruption laws and regulations. The programme shall be proportionate to the risks faced by the Business Partner and shall include procedures to monitor compliance and detect and address violations.',
+      },
+      {
+        n: '8.3',
+        text: "Dealing with Public or Government Officials and Politically Exposed Persons (PEP). The Company strives to build transparent and fair relationships with Public or Government Officials (including regulators) and PEP. PEP is defined as a person entrusted with a local or foreign country's public or governmental function. The Company's Business Partners, employees and/or their representatives shall comply with the Company Anti-Bribery and Anti-Corruption Policy and all applicable laws and regulations in all dealings or interactions with Public or Government Officials (including regulators) and PEP. The Company expects the conduct of Business Partner or Business Partner Representatives who perform tasks and works for the Company to be above board. Any misrepresentation, illegal or unethical conduct shall be regarded as breach of this Agreement of Responsible Business conduct.",
+      },
+      {
+        n: '8.4',
+        text: 'Gifts and business courtesies. The Company has adopted a "No Gift" Policy, whereby all its stakeholders as well as their family members, who are acting for, and on behalf of the Company, directly or indirectly, are prohibited from giving or accepting gifts to avoid conflict of interest (actual or perceived) as a gift can be seen as a bribe that may negatively impact the Company\'s reputation or be in violation of the Company No Gift Policy as well as laws and regulations. The Business Partner shall not, directly, or indirectly, offer or give gifts to the Purchaser\'s employees or representatives or anyone closely related to these, unless the gift is of modest value. Cash or cash equivalents shall not be offered or given. Hospitality, such as social events, meals or entertainments may be offered if there is a legitimate business purpose involved, and the cost is kept within reasonable limits. Travel expenses for the individual representing the Purchaser shall be paid by the Purchaser. Hospitality, expenses, or gifts shall not be offered or given in situations of contract negotiation, bidding, or award. The Business Partner shall not, directly, or indirectly, offer or give any gifts or hospitality to any third party, including public officials, in order to obtain or retain business or a business advantage for the Purchaser.',
+      },
+      {
+        n: '8.5',
+        text: 'Money Laundering. The Business Partner shall be firmly opposed to all forms of money laundering and shall only conduct business with Business Partners involved in legitimate business activities with funds derived from legitimate sources. The Business Partner shall take reasonable steps to prevent and detect any illegal form of payments and prevent its financial transactions from being used by others to launder money.',
+      },
+      {
+        n: '8.6',
+        text: "Sanctions. The Business Partner shall take reasonable steps to ensure that no entity or person subject to United Nations, European Union or other applicable sanctions laws and regulations is involved in or unlawfully benefits from the Business Partner's operations, including its supply chain, and to prevent involvement in any transaction prohibited by applicable sanctions laws and regulations.",
+      },
+      {
+        n: '8.7',
+        text: "Conflict of interest. Business Partner must report to the Company's Head of Procurement in writing if any director or employee of the Company and/or relatives of director or employee of the Company are employees, partners, directors, or shareholders (other than publicly traded securities) of Business Partner. Relatives of the Company director or employee comprise of the director's or employee's spouse, parents, children, brothers or sisters, or spouse of child, brother, and sister. It is the Company's policy that a director or employee declare any interests that they or their relatives, directly or indirectly, have in a bid or a Business Partner.",
+      },
+      {
+        n: '8.8',
+        text: 'Raising Concerns. The Company has a channel that can be used by Business Partners to voice and register their concerns, including any act or conduct that is in violation of the ABC, SCP, actual or suspected misconduct, illegal or unethical behaviour, without fear of retaliation or unfair treatment. A Business Partner shall ensure that there is a reasonable belief or basis for the concern and the disclosure is made in good faith and not for personal gain or motivated by ill or malicious intention. Mere rumour or hearsay information is not the basis for speaking up or to whistle blow. The Company is committed to protect, within reason and means, anyone who reports or raises a concern in good faith, and those who participate in or conduct an investigation, from retaliation.',
+      },
+    ],
+  },
+];
+
+const nonCompliance = [
+  {
+    no: '1',
+    risk: 'Major',
+    action: "Stop work order, business partner's company will be suspended immediately (refer Non-Compliance Consequences matrix)",
+    items: [
+      "No D'PTW (Permit to Work); Not apply D'PTW, No Check-In, Check-Out, Falsifying information in D'PTW",
+      'No safety harness / safety shoe / safety helmet',
+      'No Working at Height (WAH) Certification, Expired WAH',
+      'No test pen, No electrical safety glove',
+      'Fake CIDB / Fake WAH',
+      'Life threatening / hazardous behavior or issue',
+      'Pollution',
+      'Forced Labour',
+    ],
+  },
+  {
+    no: '2',
+    risk: 'Minor',
+    action: 'Affected worker will be evicted from site, provide corrective actions within 7 days',
+    items: [
+      'No CIDB certification / Expired CIDB',
+      'Illegal worker / No VISA / Expired work permit',
+      'No First-Aid kit / Fire extinguisher',
+      'Unsafe working behavior',
+      'Safety Vest for team working by the side of the road',
+      'Regulatory requirements',
+    ],
+  },
+  {
+    no: '3',
+    risk: 'Minor',
+    action: "Will notify the Company's Top Management",
+    items: ['Living Conditions'],
+  },
+];
+
+const ncAreas = [
+  'Forced Labour - Not given at least one day off per week, original ID document kept by employer, not following local labour law on minimum wages, public holidays, annual leave, etc.',
+  'Living Condition - Not provided with adequate and decent housing accommodation',
+  'Team working by the side of the road will be required to wear safety vest',
+];
+
+const consequencesHead = ['Scenario', 'Tier 1', 'Tier 2', 'Tier 3 Onwards'];
+const consequences = [
+  {
+    group: 'Child Labour, Fatality due to Negligence',
+    rows: [
+      { scenario: 'Child labour and Fatality on Tier 1', cells: [['Company will be suspended or terminated subject to circumstances'], [], []] },
+      {
+        scenario: 'Child labour and Fatality on Tier 2',
+        cells: [['Company will be suspended or terminated subject to circumstances'], ['Company will be terminated from Group'], []],
+      },
+      {
+        scenario: 'Child labour and Fatality on Tier 3',
+        cells: [
+          ['Company will be suspended or terminated subject to circumstances'],
+          ['Company will be suspended or terminated subject to circumstances'],
+          ['Company will be terminated from Group'],
+        ],
+      },
+    ],
+  },
+  {
+    group: 'Major Non-Conformance (NC)',
+    rows: [
+      {
+        scenario: 'Major NC on Tier 1',
+        cells: [
+          [
+            'Terminate team with major NC or company suspended for 6 months subject to circumstance',
+            'WARNING Letter',
+            '> 3 Warning Letters (within rolling 12 months from 1st warning letter) = company terminated from Group project; no reinstatement within 3 years',
+          ],
+          [],
+          [],
+        ],
+      },
+      {
+        scenario: 'Major NC on Tier 2',
+        cells: [
+          [
+            'WARNING Letter',
+            '> 3 Warning Letters (within rolling 12 months from 1st warning letter) = company terminated from Group project; no reinstatement within 3 years',
+          ],
+          [
+            'Company 1st warning letter & team terminated',
+            '2nd warning letter (within rolling 12mths) = company terminated from Group project.',
+            '(Subject to management)',
+          ],
+          [],
+        ],
+      },
+      {
+        scenario: 'Major NC on Tier 3 onward',
+        cells: [
+          [
+            'WARNING Letter',
+            '> 3 Warning Letters (within rolling 12 months from 1st warning letter) = company terminated from Group project (no reinstatement within 3 years)',
+          ],
+          [
+            'Company 1st warning letter',
+            '> 2nd Warning Letter (within rolling 12 months) = company suspended for 6 months from Group project',
+            '> 3rd Warning Letter (within rolling 12mths) - company terminated from Group project (no reinstatement)',
+            '(Subject to management)',
+          ],
+          [
+            'Company 1st warning letter & team terminated',
+            '2nd warning letter (within rolling 12mths) = company terminated from Group project (no reinstatement)',
+            '(Subject to management)',
+          ],
+        ],
+      },
+    ],
+  },
+];
+
+const h2 = 'text-2xl font-bold text-brand-900';
+const h3 = 'text-lg font-bold text-brand-900';
+const p = 'text-base/[1.7] text-copy';
+const th = 'border border-brand-200 bg-brand-75 px-3 py-2 text-left text-small font-semibold text-brand-900';
+const td = 'border border-brand-200 px-3 py-2 align-top text-small/[1.6] text-copy';
+---
+
+<Layout
+  title="Agreement on Responsible Business Conduct"
+  description={`The Agreement on Responsible Business Conduct that business partners of ${C} agree to comply with, including the Supplier Conduct Principles.`}
+>
+  <PageHero
+    crumbs={[
+      { label: 'Home', href: withBase('/') },
+      { label: 'Our Governance', href: withBase('/our-governance') },
+      { label: 'Agreement on Responsible Business Conduct' },
+    ]}
+    eyebrow="Governance"
+    title="Agreement on Responsible Business Conduct"
+    intro="The framework our vendors and suppliers agree to follow when working with us."
+  />
+  <div class="mx-auto flex max-w-4xl flex-col gap-12 px-8 pt-12 pb-16">
+    <nav aria-label="On this page" class="rounded-lg bg-brand-75 p-4 text-small">
+      <ul class="flex flex-wrap gap-x-6 gap-y-2 font-semibold text-brand-900">
+        <li><a class="underline hover:no-underline" href="#agreement">Agreement</a></li>
+        <li><a class="underline hover:no-underline" href="#attachment-a">Attachment A: Supplier Conduct Principles</a></li>
+        <li><a class="underline hover:no-underline" href="#attachment-b">Attachment B: Improvement Plan</a></li>
+        <li><a class="underline hover:no-underline" href="#attachment-c">Attachment C: Non-Compliance Matrix</a></li>
+      </ul>
+    </nav>
+
+    <section id="agreement" aria-labelledby="agreement-title" class="flex flex-col gap-6 scroll-mt-8">
+      <h2 id="agreement-title" class={h2}>Agreement on Responsible Business Conduct</h2>
+      <p class={p}>
+        This agreement on responsible business conduct ("Agreement") is made and entered into at the date and place specified below by and between {C} including its subsidiaries, with its principal place of business at {COMPANY.address} (hereinafter referred to as "Purchaser", which term unless contradictory to the context and subject shall mean and include its nominees and successors-in-interest); their respective Vendor(s) and/or Supplier(s) (hereinafter referred to as "Business Partner", which term unless contradictory to the context and subject shall mean and include its nominees and successors-in-interest).
+      </p>
+      <p class={p}>
+        The Purchaser and the Business Partner are hereinafter collectively referred to as "Parties" and individually as a "Party" as the context may require.
+      </p>
+      {
+        sections.map((s) => (
+          <div class="flex flex-col gap-3">
+            <h3 class={h3}>{s.n}. {s.title}</h3>
+            {s.clauses.map((c) => (
+              <p class:list={[p, c.n && 'flex gap-3']}>
+                {c.n && <span class="shrink-0 font-semibold text-brand-900">{c.n}</span>}
+                <span>{c.text}</span>
+              </p>
+            ))}
+          </div>
+        ))
+      }
+    </section>
+
+    <section id="attachment-a" aria-labelledby="attachment-a-title" class="flex flex-col gap-6 scroll-mt-8">
+      <h2 id="attachment-a-title" class={h2}>Attachment A: Supplier Conduct Principles</h2>
+      {
+        principles.map((s) => (
+          <div class="flex flex-col gap-3">
+            <h3 class={h3}>{s.n}. {s.title}</h3>
+            {s.clauses.map((c) => (
+              <p class:list={[p, c.n && 'flex gap-3']}>
+                {c.n && <span class="shrink-0 font-semibold text-brand-900">{c.n}</span>}
+                <span>{c.text}</span>
+              </p>
+            ))}
+          </div>
+        ))
+      }
+    </section>
+
+    <section id="attachment-b" aria-labelledby="attachment-b-title" class="flex flex-col gap-3 scroll-mt-8">
+      <h2 id="attachment-b-title" class={h2}>Attachment B: Improvement Plan</h2>
+      <p class={p}>(Upon request)</p>
+    </section>
+
+    <section id="attachment-c" aria-labelledby="attachment-c-title" class="flex flex-col gap-6 scroll-mt-8">
+      <h2 id="attachment-c-title" class={h2}>Attachment C: Non-Compliance Matrix</h2>
+
+      <h3 class={h3}>Types of Non-Compliance</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr>
+              <th scope="col" class={th}>No</th>
+              <th scope="col" class={th}>Non-Compliance</th>
+              <th scope="col" class={th}>Risk Classification</th>
+              <th scope="col" class={th}>Immediate Action to Be Taken by the Parties</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              nonCompliance.map((r) => (
+                <tr>
+                  <td class={td}>{r.no}</td>
+                  <td class={td}>
+                    <ul class="flex list-disc flex-col gap-1 pl-4">
+                      {r.items.map((i) => <li>{i}</li>)}
+                    </ul>
+                  </td>
+                  <td class={td}>{r.risk}</td>
+                  <td class={td}>{r.action}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <p class={p}>Non-compliance for the below areas if:</p>
+        <ul class="flex list-disc flex-col gap-1 pl-6">
+          {ncAreas.map((a) => <li class={p}>{a}</li>)}
+        </ul>
+      </div>
+
+      <h3 class={h3}>Consequences of Non-Compliance for Child Labour, Fatality and Major Non-Compliances</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[40rem] border-collapse">
+          <thead>
+            <tr>
+              <th scope="col" class={th}><span class="sr-only">Category</span></th>
+              {consequencesHead.map((h) => <th scope="col" class={th}>{h}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              consequences.map((g) =>
+                g.rows.map((r, i) => (
+                  <tr>
+                    {i === 0 && (
+                      <th scope="rowgroup" rowspan={g.rows.length} class={`${td} font-semibold text-brand-900`}>
+                        {g.group}
+                      </th>
+                    )}
+                    <th scope="row" class={`${td} font-normal`}>{r.scenario}</th>
+                    {r.cells.map((c) => (
+                      <td class:list={[td, c.length === 0 && 'bg-brand-75']}>
+                        {c.length > 0 && (
+                          <ul class="flex list-disc flex-col gap-1 pl-4">
+                            {c.map((t) => <li>{t}</li>)}
+                          </ul>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</Layout>

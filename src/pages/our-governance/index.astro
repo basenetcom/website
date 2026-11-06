@@ -1,8 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import PageHero from '../components/PageHero.astro';
-import { COMPANY } from '../site.config';
-import { withBase } from '../nav';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { COMPANY } from '../../site.config';
+import { withBase } from '../../nav';
 
 const purposes = [
   'to enable it to discharge its duties and obligations related to its functions or activities under the legislation administered by the Company and only when it is necessary for or directly related to such purposes;',
@@ -109,6 +109,13 @@ const link = 'font-semibold text-brand-900 underline hover:no-underline';
         This policy is for the avoidance of conflicts or the appearance of conflicts of interest in any of our ongoing or potential dealings.
       </p>
       <p class={p}>{COMPANY.legalName} thanks you for your continuous support.</p>
+    </section>
+    <section aria-labelledby="rbc" class="flex flex-col gap-4">
+      <h2 id="rbc" class={h2}>Agreement on Responsible Business Conduct</h2>
+      <p class={p}>
+        By registering with {COMPANY.legalName}, you agree to comply with our Agreement on Responsible Business Conduct.
+        <a href={withBase('/our-governance/agreement-on-responsible-business-conduct')} class={link}>Please click here to view the full document</a>.
+      </p>
     </section>
   </div>
 </Layout>
