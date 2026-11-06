@@ -5,10 +5,18 @@ import { withBase } from '../../nav';
 
 <div class="flex flex-col gap-3 border-t border-brand-800 pt-6 text-caption/[1.6] text-brand-200 sm:flex-row sm:items-center sm:justify-between md:pt-4">
   <p>© {new Date().getFullYear()} {COMPANY.legalName}. All rights reserved.</p>
-  <a
-    href={withBase('/privacy')}
-    class="w-fit rounded-sm hover:text-white hover:underline focus-visible:text-white focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white"
-  >
-    Privacy Policy
-  </a>
+  <nav aria-label="Legal" class="flex gap-6">
+    <a
+      href={withBase('/our-governance')}
+      class="w-fit rounded-sm hover:text-white hover:underline focus-visible:text-white focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white"
+    >
+      Our Governance
+    </a>
+    <a
+      href={withBase('/privacy')}
+      class="w-fit rounded-sm hover:text-white hover:underline focus-visible:text-white focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white"
+    >
+      Privacy Policy
+    </a>
+  </nav>
 </div>
