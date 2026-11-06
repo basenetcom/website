@@ -8,7 +8,7 @@ export const COMPANY = {
     href: 'tel:+60389290000',
   },
   email: 'sales@basenet.com.my',
-  address: 'Paragon Point, B-01-2, Jalan Medan Bangi, PB5 Pusat, 43650 Bandar Baru Bangi, Selangor',
+  address: 'Paragon Point, B-01-2, Jalan Medan PB5, 43650 Bandar Baru Bangi, Selangor',
   operatingHours: 'Mon-Fri 8 am-5 pm',
 } as const;
 
