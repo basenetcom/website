@@ -71,7 +71,7 @@ const link = 'font-semibold text-brand-900 underline hover:no-underline';
       </p>
       <ul class="flex list-disc flex-col gap-2 pl-6 marker:text-brand-900">
         <li class={p}><strong>Protection from Retaliation:</strong> We guarantee that any individual making a report in good faith will be protected from harassment, demotion, or retaliatory action.</li>
-        <li class={p}><strong>Reporting Channels:</strong> Reports can be submitted directly to our Compliance Team via confidential email or through written correspondence to our headquarters.</li>
+        <li class={p}><strong>Reporting Channels:</strong> Reports can be submitted directly to our Management Team via confidential email or through written correspondence to our headquarters.</li>
       </ul>
     </section>
 
@@ -86,13 +86,13 @@ const link = 'font-semibold text-brand-900 underline hover:no-underline';
       </ul>
     </section>
 
-    <section aria-labelledby="contact-compliance" class="flex flex-col gap-4">
-      <h2 id="contact-compliance" class={h2}>Contact the Compliance Team</h2>
+    <section aria-labelledby="contact-Us" class="flex flex-col gap-4">
+      <h2 id="contact-Us" class={h2}>Contact Us</h2>
       <p class={p}>
         For inquiries regarding our corporate governance policies, or to make a confidential report, please contact:
       </p>
       <address class="mt-3 rounded-lg bg-brand-75 p-4 text-base/[1.7] not-italic text-copy">
-        <strong class="text-brand-900">{COMPANY.legalName}, Compliance & Legal Department</strong><br />
+        <strong class="text-brand-900">{COMPANY.legalName}</strong><br />
         {COMPANY.address}<br />
         Email: <a href={`mailto:${COMPANY.supportEmail}`} class={link}>{COMPANY.supportEmail}</a><br />
         Phone: <a href={COMPANY.phone.href} class={link}>{COMPANY.phone.display}</a>
