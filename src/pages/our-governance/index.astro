@@ -4,18 +4,6 @@ import PageHero from '../../components/PageHero.astro';
 import { COMPANY } from '../../site.config';
 import { withBase } from '../../nav';
 
-const purposes = [
-  'to enable it to discharge its duties and obligations related to its functions or activities under the legislation administered by the Company and only when it is necessary for or directly related to such purposes;',
-  'to enable it to discharge its contractual obligations;',
-  'to enable the resolution of a concern or complaint;',
-  'to create directories or databases whether for publication or not;',
-  'to provide ongoing information about events and programs, training, our products and services to people that we believe are interested in such events, programs, training, products and services;',
-  'to provide services;',
-  'to research, develop and improve our events, programs, products and services;',
-  'to respond to all your queries and emails; and',
-  'for any other purpose that is incidental or ancillary or in furtherance to the above purposes as consented by you in writing.',
-];
-
 const h2 = 'text-2xl font-bold text-brand-900';
 const p = 'text-base/[1.7] text-copy';
 const link = 'font-semibold text-brand-900 underline hover:no-underline';
@@ -23,99 +11,92 @@ const link = 'font-semibold text-brand-900 underline hover:no-underline';
 
 <Layout
   title="Our Governance"
-  description={`${COMPANY.legalName} governance: Privacy Notice, Zero Tolerance on Bribery and Corruption Notice and No Gift Notice.`}
+  description={`${COMPANY.legalName} corporate governance framework: Code of Conduct, ABAC Policy, Data Protection, and Whistleblowing.`}
 >
   <PageHero
     crumbs={[{ label: 'Home', href: withBase('/') }, { label: 'Our Governance' }]}
     eyebrow="Governance"
     title="Our Governance"
-    intro="Privacy Notice, No Bribery and Corruption Notice & No Gift Notice"
+    intro="Corporate Governance Framework and Compliance Policies"
   />
   <div class="mx-auto flex max-w-3xl flex-col gap-12 px-8 pt-12 pb-16">
     <header class="flex flex-col gap-3">
-      <p class="text-xl font-bold text-brand-900">Let's Do the Right Thing!</p>
+      <p class="text-xl font-bold text-brand-900">Our Commitment to Integrity</p>
       <p class={p}>
-        {COMPANY.legalName} is committed to conducting our business to the highest standards of integrity and good governance.
+        At {COMPANY.legalName}, we believe that robust corporate governance is the foundation of sustainable business growth and client trust. As a provider of business-ready networking, virtualization, and security solutions, we are committed to maintaining the highest standards of integrity, accountability, and ethical conduct in all our operations.
+      </p>
+      <p class={p}>
+        Our governance framework is designed to ensure strict regulatory compliance, protect our clients' sensitive infrastructure, and foster a culture of transparency across our organization.
       </p>
     </header>
 
-    <section aria-labelledby="privacy-notice" class="flex flex-col gap-4">
-      <h2 id="privacy-notice" class={h2}>Privacy Notice</h2>
-      <ol class="flex list-decimal flex-col gap-4 pl-6 marker:font-semibold marker:text-brand-900">
-        <li class={p}>
-          In line with the Personal Data Protection Act 2010 (hereinafter referred to as "PDPA"), which regulates the processing of personal data in commercial transactions, {COMPANY.legalName} ("the Company", "our", "us", or "we") seeks your consent to use, process and/or retain your personal data. For the purpose of this notice, the terms "personal data" and "processing" shall have the meaning prescribed in the PDPA.
-        </li>
-        <li class={p}>
-          To facilitate your understanding of our use, disclosure and retention of your personal data, kindly refer to our <a href={withBase('/privacy')} class={link}>Privacy Policy</a>.
-        </li>
-        <li class={p}>
-          The Company processes personal data which includes but is not limited to personal particulars including name, race, religion, date of birth, age, gender, marital status, address, contact details, national registration identity card (NRIC) number, passport number, educational and professional background, and information of any past breaches of or convictions under any law and all other details provided by you.
-        </li>
-        <li class={p}>
-          The Company processes personal data for, among others, the following purposes:
-          <ul class="mt-3 flex list-disc flex-col gap-2 pl-6">
-            {purposes.map((t) => <li>{t}</li>)}
-          </ul>
-        </li>
-        <li class={p}>
-          You agree to provide the necessary personal data as required by the Company from time to time. The provision of such data is essential for the Company to fulfil the purposes outlined in Paragraph 4. Failure to provide the requested personal data may result in the Company being unable to proceed with certain processes or to continue any dealings with you. For any enquiries, please contact us at:
-          <address class="mt-3 rounded-lg bg-brand-75 p-4 text-base/[1.7] not-italic text-copy">
-            <strong class="text-brand-900">{COMPANY.legalName}, Compliance Team</strong><br />
-            {COMPANY.address}<br />
-            Email: <a href={`mailto:${COMPANY.supportEmail}`} class={link}>{COMPANY.supportEmail}</a><br />
-            Phone: <a href={COMPANY.phone.href} class={link}>{COMPANY.phone.display}</a>
-          </address>
-        </li>
-        <li class={p}>
-          Your personal data is and will be collected from various sources, including information you have provided to the Company, information from third parties and information in the public domain.
-        </li>
-        <li class={p}>
-          The Company shall keep all personal data confidential and endeavours to implement the appropriate administrative and security safeguards and procedures in accordance with the applicable laws and regulations to prevent the unauthorised or unlawful processing of personal data and accidental loss or destruction of, or damage to, personal data. Your personal data will not be transferred outside of the country without your prior written consent, unless such transfer is required by applicable laws or regulatory obligations.
-        </li>
-        <li class={p}>
-          Where the Company considers it necessary to facilitate its processes and functions under Paragraph 4, the Company may transfer or share relevant personal data within or outside the Company, under conditions of confidentiality and similar level of security safeguards. Such a transfer of personal data will only be permitted to be carried out provided that the same is permitted by law and when the Company is satisfied that there are sufficient security standards to protect the integrity and confidentiality of such personal data.
-        </li>
-        <li class={p}>
-          The Company retains personal data for as long as necessary to fulfil the purposes mentioned in Paragraph 4. Once these purposes are no longer applicable, the Company will either return the personal data to the data subject, securely destroy or permanently delete it, in accordance with the PDPA.
-        </li>
-        <li class={p}>
-          The Company shall ensure that the personal data processed is accurate and up-to-date. The Company shall be kept informed of any changes to be made to personal data or if the personal data is not accurate.
-        </li>
-        <li class={p}>
-          Under the PDPA, you have the right to access your personal data to ensure that the personal data we hold about you is accurate, complete, not misleading and up-to-date. If you wish to exercise such rights and request access to your personal data, please contact us through the contact information in Paragraph 5.
-        </li>
-        <li class={p}>
-          By providing your personal data, you confirm that you have read, understood, and acknowledged the Company's Privacy Policy. You may withdraw your consent at any time by notifying us using the contact details provided in Paragraph 5.
-        </li>
-        <li class={p}>
-          If you suspect that the Company is misusing your personal data, contact us through the contact information in Paragraph 5. If you suspect that your personal data has been stolen or compromised, report to the Personal Data Protection Commissioner. If you are a victim of a data breach, report at your nearest police station, change your password on all online accounts and contact your bank, if needed.
-        </li>
-      </ol>
+    <section aria-labelledby="code-of-conduct" class="flex flex-col gap-4">
+      <h2 id="code-of-conduct" class={h2}>1. Code of Business Conduct and Ethics</h2>
+      <p class={p}>
+        Our Code of Conduct establishes the baseline for professional behavior for all {COMPANY.legalName} employees, directors, and contractors.
+      </p>
+      <ul class="flex list-disc flex-col gap-2 pl-6 marker:text-brand-900">
+        <li class={p}><strong>Integrity in IT Operations:</strong> We mandate strict vendor neutrality and unbiased technical recommendations, ensuring our hardware, software, and deployment solutions serve the client's best interests without external bias.</li>
+        <li class={p}><strong>Confidentiality:</strong> Given our role in deploying enterprise networks and security infrastructure, all personnel are bound by strict non-disclosure agreements regarding client topologies, IP addressing, video surveillance configurations, and security vulnerabilities.</li>
+        <li class={p}><strong>Conflict of Interest:</strong> Employees must disclose any personal or financial interests that could influence business decisions, particularly in procurement, project bidding, and vendor selection.</li>
+      </ul>
     </section>
 
     <section aria-labelledby="anti-bribery" class="flex flex-col gap-4">
-      <h2 id="anti-bribery" class={h2}>Zero Tolerance on Bribery and Corruption Notice</h2>
+      <h2 id="anti-bribery" class={h2}>2. Anti-Bribery and Corruption (ABAC) Policy</h2>
       <p class={p}>
-        {COMPANY.legalName} establishes a culture of and adopts a policy of zero tolerance against all forms of bribery and corruption. We are committed to conducting our business dealings ethically with integrity, ensuring uncompromising adherence to professionalism, strong moral principles and laws and regulations enacted countering bribery and corruption.
+        {COMPANY.legalName} strictly prohibits all forms of bribery and corruption, operating in full compliance with the Malaysian Anti-Corruption Commission (MACC) Act 2009.
       </p>
+      <ul class="flex list-disc flex-col gap-2 pl-6 marker:text-brand-900">
+        <li class={p}><strong>Zero Tolerance:</strong> We do not offer, give, solicit, or accept bribes, kickbacks, or improper facilitation payments to secure business advantages or expedite technical services.</li>
+        <li class={p}><strong>Gifts and Hospitality:</strong> Any exchange of corporate gifts or hospitality with vendors or clients must be reasonable, transparent, and accurately recorded in our financial ledgers to prevent any perception of undue influence.</li>
+      </ul>
     </section>
 
-    <section aria-labelledby="no-gift" class="flex flex-col gap-4">
-      <h2 id="no-gift" class={h2}>No Gift Notice</h2>
+    <section aria-labelledby="data-protection" class="flex flex-col gap-4">
+      <h2 id="data-protection" class={h2}>3. Data Protection and Privacy</h2>
       <p class={p}>
-        We practise a "No Gift Policy" in all our dealings. Save as allowed under this Policy, all our employees (including their family members) and stakeholders shall not at any time accept from and/or offer gifts to third parties whether directly or indirectly, and must immediately refuse and/or return such gifts.
+        As a technology partner, safeguarding data is embedded in our operational DNA. We fully comply with the Personal Data Protection Act (PDPA) 2010.
       </p>
-      <p class={p}>
-        This policy is for the avoidance of conflicts or the appearance of conflicts of interest in any of our ongoing or potential dealings.
-      </p>
-      <p class={p}>{COMPANY.legalName} thanks you for your continuous support.</p>
+      <ul class="flex list-disc flex-col gap-2 pl-6 marker:text-brand-900">
+        <li class={p}><strong>Data Minimization:</strong> We collect and process only the personal and corporate data strictly necessary to fulfill our service-level agreements and network deployment contracts.</li>
+        <li class={p}><strong>Infrastructure Security:</strong> We apply stringent industry best practices to secure our internal systems and client deployments against unauthorized access, data breaches, and cyber threats.</li>
+      </ul>
     </section>
-    <section aria-labelledby="rbc" class="flex flex-col gap-4">
-      <h2 id="rbc" class={h2}>Agreement on Responsible Business Conduct</h2>
+
+    <section aria-labelledby="whistleblowing" class="flex flex-col gap-4">
+      <h2 id="whistleblowing" class={h2}>4. Whistleblowing Policy</h2>
       <p class={p}>
-        By registering with {COMPANY.legalName}, you agree to comply with our Agreement on Responsible Business Conduct.
-        <a href={withBase('/our-governance/agreement-on-responsible-business-conduct')} class={link}>Please click here to view the full document</a>.
+        {COMPANY.legalName} provides a secure, confidential channel for employees, partners, and clients to report suspected misconduct, fraud, or violations of our governance policies.
       </p>
+      <ul class="flex list-disc flex-col gap-2 pl-6 marker:text-brand-900">
+        <li class={p}><strong>Protection from Retaliation:</strong> We guarantee that any individual making a report in good faith will be protected from harassment, demotion, or retaliatory action.</li>
+        <li class={p}><strong>Reporting Channels:</strong> Reports can be submitted directly to our Compliance Team via confidential email or through written correspondence to our headquarters.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="supply-chain" class="flex flex-col gap-4">
+      <h2 id="supply-chain" class={h2}>5. Supply Chain and Partner Governance</h2>
+      <p class={p}>
+        Our commitment to security extends entirely through our hardware and software supply chains.
+      </p>
+      <ul class="flex list-disc flex-col gap-2 pl-6 marker:text-brand-900">
+        <li class={p}><strong>Vendor Vetting:</strong> We exclusively partner with reputable technology vendors and authorized distributors. We require our suppliers to adhere to equivalent ethical, labor, and cybersecurity standards.</li>
+        <li class={p}><strong>Counterfeit Prevention:</strong> We maintain strict procurement pipelines to ensure all networking hardware, servers, and security appliances are authentic and free from supply chain tampering.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="contact-compliance" class="flex flex-col gap-4">
+      <h2 id="contact-compliance" class={h2}>Contact the Compliance Team</h2>
+      <p class={p}>
+        For inquiries regarding our corporate governance policies, or to make a confidential report, please contact:
+      </p>
+      <address class="mt-3 rounded-lg bg-brand-75 p-4 text-base/[1.7] not-italic text-copy">
+        <strong class="text-brand-900">{COMPANY.legalName}, Compliance & Legal Department</strong><br />
+        {COMPANY.address}<br />
+        Email: <a href={`mailto:${COMPANY.supportEmail}`} class={link}>{COMPANY.supportEmail}</a><br />
+        Phone: <a href={COMPANY.phone.href} class={link}>{COMPANY.phone.display}</a>
+      </address>
     </section>
   </div>
 </Layout>
