@@ -16,7 +16,7 @@ export const NAV_LINKS: NavItem[] = [
       { label: 'LMS', href: '/staff/lms' },
       { label: 'HRMS', href: '/staff/hrms' },
       { label: 'E-Car', href: '/staff/e-car' },
-      { label: 'Webmail', href: '/staff/webmail' },
+      { label: 'Webmail', href: 'https://webmail.basenet.com.my' },
       { label: 'Cloud Data', href: '/staff/cloud-data' },
       { label: 'Staff Directory', href: '/staff' },
     ],
