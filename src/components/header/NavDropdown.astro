@@ -1,4 +1,6 @@
 ---
+import { isExternal } from '../../nav';
+
 interface Props {
   label: string;
   id: string;
@@ -30,6 +32,7 @@ const { label, id, active = false, items } = Astro.props;
         <li>
           <a
             href={item.href}
+            {...(isExternal(item.href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             class="block px-4 py-2 text-brand-900 hover:bg-brand-50 focus-visible:bg-brand-50 focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-brand-900"
           >
             {item.label}

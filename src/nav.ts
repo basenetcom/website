@@ -26,4 +26,6 @@ export const NAV_LINKS: NavItem[] = [
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-export const withBase = (href: string) => `${base}${href}`;
+export const isExternal = (href: string) => /^https?:\/\//.test(href);
+
+export const withBase = (href: string) => (isExternal(href) ? href : `${base}${href}`);

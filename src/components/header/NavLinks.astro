@@ -1,6 +1,6 @@
 ---
 import NavDropdown from './NavDropdown.astro';
-import { NAV_LINKS as links, withBase } from '../../nav';
+import { NAV_LINKS as links, withBase, isExternal } from '../../nav';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
