@@ -1,7 +1,8 @@
 ---
 name: Mohd Rosli Shamsuddin
 role: Managing Director
-department: ""
 board: true
 order: 1
+photo: ../../assets/staff/createcorporateprofilepicture8b8444e52k.jpg
+photoPosition: top
 ---
