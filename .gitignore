@@ -24,3 +24,7 @@ pnpm-debug.log*
 .idea/
 
 .playwright-mcp/
+
+# graphify output
+graphify-out/
+GRAPH_REPORT*
