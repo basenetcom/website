@@ -13,8 +13,7 @@ import teamPhoto from '../assets/training/team.jpg';
 const programs = await getTrainingPrograms();
 const names = programs.map((p) => p.data.title);
 const nameList = names.join(', ').replace(/, ([^,]*)$/, ' or $1');
-// Training registration lives on the training portal (Cloudflare).
-const inquireHref = 'https://basenet-training.basenettech23.workers.dev/courses';
+const inquireHref = `${withBase('/contact')}?interest=Training`;
 
 const steps = [
   {
