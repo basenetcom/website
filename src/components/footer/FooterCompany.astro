@@ -20,7 +20,7 @@ const { emblem } = Astro.props;
       aria-label={`${COMPANY.legalName} home`}
       class="block w-fit rounded-sm focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white"
     >
-      <Image src={logo} alt="" height={64} class="h-16 w-auto" />
+      <Image src={logo} alt="" height={64} densities={[1, 2, 3]} class="h-16 w-auto" />
     </a>
     <p class="text-base font-black text-white">{COMPANY.legalName}</p>
     <p class="max-w-85 text-caption/[1.7] text-brand-200">{COMPANY.tagline}</p>
